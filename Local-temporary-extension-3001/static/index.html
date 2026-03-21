@@ -572,6 +572,75 @@
             color: var(--text-primary);
             margin-bottom: 0.5rem;
         }
+
+        /* ─── Light Mode ─── */
+        :root.light-mode {
+            --bg-dark: #f3f4f6;
+            --bg-card: #ffffff;
+            --bg-card-hover: #f9fafb;
+            --border-color: #e5e7eb;
+            --text-primary: #111827;
+            --text-secondary: #6b7280;
+            --accent-blue: #3b82f6;
+            --accent-green: #10b981;
+            --accent-red: #ef4444;
+            --accent-yellow: #f59e0b;
+            --accent-gray: #6b7280;
+            --accent-cyan: #06b6d4;
+        }
+        :root.light-mode .app-header {
+            background: linear-gradient(135deg, #ffffff 0%, #f3f4f6 100%);
+        }
+        :root.light-mode .table-dark-custom th {
+            background: rgba(59, 130, 246, 0.1);
+        }
+
+        /* ─── Alt Theme Layout ─── */
+        body.alt-theme .app-header {
+            border-bottom: none;
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+            position: relative;
+            z-index: 10;
+        }
+        body.alt-theme .app-container {
+            flex-direction: column;
+        }
+        body.alt-theme .sidebar {
+            width: 100%;
+            height: auto;
+            flex-direction: row;
+            border-right: none;
+            border-bottom: 1px solid var(--border-color);
+            padding: 0.5rem 2rem;
+            gap: 1rem;
+            background: var(--bg-dark);
+        }
+        body.alt-theme .sidebar-item {
+            margin-bottom: 0;
+            padding: 0.75rem 1.25rem;
+            border-radius: 8px;
+            background: transparent;
+            border: 1px solid transparent;
+            font-weight: 600;
+        }
+        body.alt-theme .sidebar-item:hover {
+            background: var(--bg-card);
+        }
+        body.alt-theme .sidebar-item.active {
+            background: var(--accent-blue);
+            color: #ffffff;
+            border: 1px solid var(--accent-blue);
+        }
+        body.alt-theme .main-content {
+            padding: 2rem;
+            max-width: 1400px;
+            margin: 0 auto;
+            width: 100%;
+        }
+        body.alt-theme .panel-card {
+            box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05), 0 2px 4px -1px rgba(0, 0, 0, 0.03);
+            border-radius: 16px;
+        }
     </style>
 </head>
 
@@ -598,6 +667,9 @@
             </div>
             <div class="sidebar-item" onclick="switchView('builder')" id="nav-builder">
                 🛠️ Script Builder
+            </div>
+            <div class="sidebar-item" onclick="switchView('settings')" id="nav-settings">
+                ⚙️ Settings
             </div>
         </aside>
 
@@ -769,6 +841,40 @@
             </div>
         </div> <!-- End Builder View -->
 
+        <!-- ═══════ SETTINGS VIEW ═══════ -->
+        <div id="settingsView" style="display: none;">
+            <div class="panel-card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2>⚙️ Cài đặt Giao diện (Settings)</h2>
+                </div>
+                <div style="margin-bottom: 2rem; max-width: 600px;">
+                    <div style="background: var(--bg-dark); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1rem;">
+                        <h3 style="font-size: 1rem; margin-bottom: 1rem;">Màu nền (Theme Mode)</h3>
+                        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; margin-bottom: 0.75rem;">
+                            <input type="radio" name="themeMode" value="dark" onchange="applySettings()" checked> 
+                            <span>🌙 Giao diện Tối (Dark - Mặc định)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                            <input type="radio" name="themeMode" value="light" onchange="applySettings()"> 
+                            <span>☀️ Giao diện Sáng (Light)</span>
+                        </label>
+                    </div>
+
+                    <div style="background: var(--bg-dark); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <h3 style="font-size: 1rem; margin-bottom: 1rem;">Bố cục (Layout Style)</h3>
+                        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer; margin-bottom: 0.75rem;">
+                            <input type="radio" name="layoutStyle" value="default" onchange="applySettings()" checked> 
+                            <span>🗂️ Bố cục Cổ điển (Sidebar Trái)</span>
+                        </label>
+                        <label style="display: flex; align-items: center; gap: 0.75rem; cursor: pointer;">
+                            <input type="radio" name="layoutStyle" value="alt" onchange="applySettings()"> 
+                            <span>🌐 Bố cục Hiện đại (Top Navigation)</span>
+                        </label>
+                    </div>
+                </div>
+            </div>
+        </div> <!-- End Settings View -->
+
     </div> <!-- End Main Content -->
 </div> <!-- End App Container -->
 
@@ -840,6 +946,57 @@
         let currentWorkers = [];
         let currentTasks = [];
         let selectedTaskId = null;
+
+        // ── Settings ──
+        function loadSettings() {
+            const savedTheme = localStorage.getItem('cp_theme') || 'dark';
+            const savedLayout = localStorage.getItem('cp_layout') || 'default';
+            
+            const themeRadios = document.getElementsByName('themeMode');
+            for(let r of themeRadios) {
+                if(r.value === savedTheme) r.checked = true;
+            }
+            const layoutRadios = document.getElementsByName('layoutStyle');
+            for(let r of layoutRadios) {
+                if(r.value === savedLayout) r.checked = true;
+            }
+            
+            applySettings(false);
+        }
+
+        function applySettings(save = true) {
+            let selectedTheme = 'dark';
+            let selectedLayout = 'default';
+            
+            const themeRadios = document.getElementsByName('themeMode');
+            for(let r of themeRadios) {
+                if(r.checked) selectedTheme = r.value;
+            }
+            const layoutRadios = document.getElementsByName('layoutStyle');
+            for(let r of layoutRadios) {
+                if(r.checked) selectedLayout = r.value;
+            }
+
+            if(save) {
+                localStorage.setItem('cp_theme', selectedTheme);
+                localStorage.setItem('cp_layout', selectedLayout);
+                showToast('✅ Cập nhật giao diện thành công', 'success');
+            }
+
+            if(selectedTheme === 'light') {
+                document.documentElement.classList.add('light-mode');
+            } else {
+                document.documentElement.classList.remove('light-mode');
+            }
+
+            if(selectedLayout === 'alt') {
+                document.body.classList.add('alt-theme');
+            } else {
+                document.body.classList.remove('alt-theme');
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', loadSettings);
 
         // ── Toast Notifications ──
         function showToast(message, type = 'success') {
@@ -1523,6 +1680,7 @@
             
             document.getElementById('dashboardView').style.display = viewName === 'dashboard' ? 'block' : 'none';
             document.getElementById('builderView').style.display = viewName === 'builder' ? 'block' : 'none';
+            document.getElementById('settingsView').style.display = viewName === 'settings' ? 'block' : 'none';
             
             if(viewName === 'builder') {
                 renderCustomTasksTable();
