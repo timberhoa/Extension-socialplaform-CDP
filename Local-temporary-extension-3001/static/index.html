@@ -872,6 +872,93 @@
                         </label>
                     </div>
                 </div>
+                </div>
+                
+                <hr style="border: none; border-top: 1px solid var(--border-color); margin: 2rem 0;">
+                
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h2>🤖 Cấu hình Gemini API (Web)</h2>
+                    <button class="btn-primary" onclick="saveGeminiSettings()" style="background: var(--accent-blue); color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">💾 Lưu Cấu Hình</button>
+                </div>
+
+                <div style="margin-bottom: 1.5rem;">
+                    <button class="btn-cancel" onclick="fetchGeminiSettings()" style="padding: 0.4rem 0.8rem; font-size: 0.85rem;">🔄 Tải lại từ Server</button>
+                </div>
+
+                <div style="display: flex; gap: 0.5rem; margin-bottom: 1rem; border-bottom: 1px solid var(--border-color); padding-bottom: 0.5rem;">
+                    <button class="tab-btn active" id="geminiTabBasicBtn" onclick="toggleGeminiTab('basic')">Cơ bản (Các trường)</button>
+                    <button class="tab-btn" id="geminiTabJsonBtn" onclick="toggleGeminiTab('json')">JSON Toàn bộ</button>
+                </div>
+
+                <div id="geminiTabBasic">
+                    <div style="background: var(--bg-dark); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1rem;">
+                        <h3 style="font-size: 1rem; margin-bottom: 1rem;">Thông số Hệ thống (System Params)</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div style="grid-column: span 2;">
+                                <label style="display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: var(--text-secondary);">API Endpoint (Gen Image)</label>
+                                <input type="text" id="geminiEndpoint" class="step-input" placeholder="https://gemini.google.com/...">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: var(--text-secondary);">Model Code</label>
+                                <input type="text" id="geminiModelCode" class="step-input" placeholder="gemini-2.0-flash-exp">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: var(--text-secondary);">Build Label (bl)</label>
+                                <input type="text" id="geminiBl" class="step-input" placeholder="boq_assistant...">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: var(--text-secondary);">F Sessions ID (f_sid)</label>
+                                <input type="text" id="geminiFSid" class="step-input" placeholder="Có thể bỏ trống tự fetch">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: var(--text-secondary);">Timeout (giây)</label>
+                                <input type="number" id="geminiTimeout" class="step-input" placeholder="120">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-dark); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1rem;">
+                        <h3 style="font-size: 1rem; margin-bottom: 1rem;">Tham số tạo ảnh (Image Gen Fields)</h3>
+                        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
+                            <div>
+                                <label style="display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: var(--text-secondary);">Model Image</label>
+                                <input type="text" id="geminiModelImage" class="step-input" placeholder="Ví dụ: imagen-3.0-generate-002">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: var(--text-secondary);">Model Name</label>
+                                <input type="text" id="geminiModelName" class="step-input" placeholder="Ví dụ: backend_model_version">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: var(--text-secondary);">Version</label>
+                                <input type="text" id="geminiVersion" class="step-input" placeholder="Ví dụ: 24.11.23">
+                            </div>
+                            <div>
+                                <label style="display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: var(--text-secondary);">Routing Rule</label>
+                                <input type="text" id="geminiRoutingRule" class="step-input" placeholder="Ví dụ: BGR_PRO">
+                            </div>
+                        </div>
+                    </div>
+
+                    <div style="background: var(--bg-dark); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color); margin-bottom: 1rem;">
+                        <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Headers (JSON)</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Obj chứa các header như x-goog-api-key, ...</p>
+                        <textarea id="geminiModelHeader" class="step-input" rows="6" style="font-family: monospace;"></textarea>
+                    </div>
+
+                    <div style="background: var(--bg-dark); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Cookies (JSON Array)</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Mảng object cookie từ Chrome.</p>
+                        <textarea id="geminiCookies" class="step-input" rows="8" style="font-family: monospace;"></textarea>
+                    </div>
+                </div>
+
+                <div id="geminiTabJson" style="display: none;">
+                    <div style="background: var(--bg-dark); padding: 1.5rem; border-radius: 8px; border: 1px solid var(--border-color);">
+                        <h3 style="font-size: 1rem; margin-bottom: 0.5rem;">Dữ liệu JSON thô</h3>
+                        <p style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.5rem;">Trường hợp bạn muốn copy/paste toàn bộ object "gemini" từ file cấu hình</p>
+                        <textarea id="geminiRawJson" class="step-input" rows="20" style="font-family: monospace; border-left: 3px solid var(--accent-blue);"></textarea>
+                    </div>
+                </div>
             </div>
         </div> <!-- End Settings View -->
 
@@ -1883,11 +1970,134 @@
         // Initialize Builder steps
         renderBuilderSteps();
 
+        // ── Gemini Settings Logic ──
+        let currentGeminiSettings = {};
+
+        function toggleGeminiTab(tab) {
+            document.getElementById('geminiTabBasicBtn').classList.toggle('active', tab === 'basic');
+            document.getElementById('geminiTabJsonBtn').classList.toggle('active', tab === 'json');
+            document.getElementById('geminiTabBasic').style.display = tab === 'basic' ? 'block' : 'none';
+            document.getElementById('geminiTabJson').style.display = tab === 'json' ? 'block' : 'none';
+            
+            if(tab === 'json') {
+                syncBasicToJson();
+            } else {
+                syncJsonToBasic();
+            }
+        }
+
+        async function fetchGeminiSettings() {
+            try {
+                const res = await fetch(`${API_BASE}/api/settings/gemini`);
+                if(res.ok) {
+                    currentGeminiSettings = await res.json();
+                    
+                    // Fill system
+                    document.getElementById('geminiEndpoint').value = currentGeminiSettings.endpoint || '';
+                    document.getElementById('geminiModelCode').value = currentGeminiSettings.model_code || '';
+                    document.getElementById('geminiBl').value = currentGeminiSettings.bl || '';
+                    document.getElementById('geminiFSid').value = currentGeminiSettings.f_sid || '';
+                    document.getElementById('geminiTimeout').value = currentGeminiSettings.timeout || 120;
+                    
+                    // Fill basic
+                    const img = currentGeminiSettings.image_gen_fields || {};
+                    document.getElementById('geminiModelImage').value = img.model_image || '';
+                    document.getElementById('geminiModelName').value = img.model_name || '';
+                    document.getElementById('geminiVersion').value = img.version || '';
+                    document.getElementById('geminiRoutingRule').value = img.routing_rule || '';
+                    
+                    document.getElementById('geminiModelHeader').value = JSON.stringify(currentGeminiSettings.model_header || {}, null, 2);
+                    document.getElementById('geminiCookies').value = JSON.stringify(currentGeminiSettings.cookies || [], null, 2);
+                    
+                    // Fill json
+                    document.getElementById('geminiRawJson').value = JSON.stringify(currentGeminiSettings, null, 2);
+                }
+            } catch (e) {
+                console.error('Lỗi tải cấu hình Gemini do kết nối', e);
+            }
+        }
+
+        function syncBasicToJson() {
+            try {
+                const data = {
+                    endpoint: document.getElementById('geminiEndpoint').value,
+                    model_code: document.getElementById('geminiModelCode').value,
+                    bl: document.getElementById('geminiBl').value,
+                    f_sid: document.getElementById('geminiFSid').value,
+                    timeout: Number(document.getElementById('geminiTimeout').value),
+                    cookies: JSON.parse(document.getElementById('geminiCookies').value || '[]'),
+                    model_header: JSON.parse(document.getElementById('geminiModelHeader').value || '{}'),
+                    image_gen_fields: {
+                        model_image: document.getElementById('geminiModelImage').value,
+                        model_name: document.getElementById('geminiModelName').value,
+                        version: document.getElementById('geminiVersion').value,
+                        routing_rule: document.getElementById('geminiRoutingRule').value
+                    }
+                };
+                document.getElementById('geminiRawJson').value = JSON.stringify(data, null, 2);
+            } catch(e) {
+                showToast('JSON ở các trường cơ bản không hợp lệ: ' + e.message, 'error');
+            }
+        }
+
+        function syncJsonToBasic() {
+            try {
+                const data = JSON.parse(document.getElementById('geminiRawJson').value || '{}');
+                
+                document.getElementById('geminiEndpoint').value = data.endpoint || '';
+                document.getElementById('geminiModelCode').value = data.model_code || '';
+                document.getElementById('geminiBl').value = data.bl || '';
+                document.getElementById('geminiFSid').value = data.f_sid || '';
+                document.getElementById('geminiTimeout').value = data.timeout || 120;
+
+                const img = data.image_gen_fields || {};
+                document.getElementById('geminiModelImage').value = img.model_image || '';
+                document.getElementById('geminiModelName').value = img.model_name || '';
+                document.getElementById('geminiVersion').value = img.version || '';
+                document.getElementById('geminiRoutingRule').value = img.routing_rule || '';
+                
+                document.getElementById('geminiModelHeader').value = JSON.stringify(data.model_header || {}, null, 2);
+                document.getElementById('geminiCookies').value = JSON.stringify(data.cookies || [], null, 2);
+            } catch(e) {
+                showToast('JSON thô không hợp lệ: ' + e.message, 'error');
+            }
+        }
+
+        async function saveGeminiSettings() {
+            const isJsonActive = document.getElementById('geminiTabJson').style.display !== 'none';
+            if (isJsonActive) {
+                syncJsonToBasic(); // Ensure basic fields are valid before saving
+            } else {
+                syncBasicToJson();
+            }
+
+            try {
+                const dataToSave = JSON.parse(document.getElementById('geminiRawJson').value);
+                
+                const res = await fetch(`${API_BASE}/api/settings/gemini`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(dataToSave)
+                });
+                
+                if (res.ok) {
+                    showToast('✅ Đã lưu cấu hình Gemini!', 'success');
+                    fetchGeminiSettings(); // Reload to confirm
+                } else {
+                    const err = await res.json();
+                    showToast('❌ Lỗi khi lưu: ' + (err.detail || 'Unknown'), 'error');
+                }
+            } catch(e) {
+                showToast('❌ JSON lỗi hoặc định dạng không hợp lệ: ' + e.message, 'error');
+            }
+        }
+
         // ── Init & Auto-refresh ──
         fetchWorkers();
         loadGallery();
         fetchTasks();
         fetchResults();
+        fetchGeminiSettings();
         setInterval(() => {
             fetchWorkers();
             refreshGeminiWorkerList();

@@ -11,7 +11,7 @@ from pydantic import BaseModel
 
 from .state import WORKERS, get_workers_list
 from .tasks import get_tasks_summary, get_task_by_id
-from .gemini_config import get_gemini_api_config
+from .gemini_config import get_gemini_api_config, load_gemini_config, save_gemini_config
 
 router = APIRouter()
 
@@ -226,3 +226,14 @@ async def delete_worker(worker_id: str):
     del WORKERS[worker_id]
     print(f"🗑️  Đã xóa Worker [{worker_id[:8]}]")
     return {"status": "deleted", "worker_id": worker_id}
+
+@router.get("/api/settings/gemini")
+async def get_settings_gemini():
+    return load_gemini_config()
+
+@router.post("/api/settings/gemini")
+async def update_settings_gemini(settings: dict):
+    success = save_gemini_config(settings)
+    if success:
+        return {"status": "success", "message": "Đã lưu cấu hình Gemini"}
+    raise HTTPException(status_code=500, detail="Không thể lưu cấu hình")

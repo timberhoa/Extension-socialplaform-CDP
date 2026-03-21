@@ -22,7 +22,7 @@ from contextlib import asynccontextmanager
 # Vô hiệu hóa QuickEdit Mode trên Windows để tránh tình trạng terminal click chuột làm treo server
 if os.name == 'nt':
     import ctypes
-    kernel32 = ctypes.windll.kernel32
+    kernel32 = ctypes.windll.kernel32  # type: ignore
     handle = kernel32.GetStdHandle(-10) # STD_INPUT_HANDLE
     mode = ctypes.c_uint32()
     kernel32.GetConsoleMode(handle, ctypes.byref(mode))

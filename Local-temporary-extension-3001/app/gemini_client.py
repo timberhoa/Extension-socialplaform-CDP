@@ -6,24 +6,33 @@ import uuid
 import asyncio
 import re
 from gemini_webapi import GeminiClient
-from .gemini_config import get_gemini_api_config
+from .gemini_config import load_gemini_config
 
 async def generate_gemini_image(prompt: str, cookies_str: str, snlm0e: str, auth_bl: str = None) -> list[str]:
     """
     Called by the backend worker logic to generate an image directly from the server.
-    Refactored to use gemini_webapi (Nano Banana 2 payload) with a proper timeout.
+    Dynamically loads payload structure from gemini_settings.json.
     """
-    cookie_dict = {}
-    for c in cookies_str.split(';'):
-        if '=' in c:
-            k, v = c.strip().split('=', 1)
-            cookie_dict[k] = v
-            
-    secure_1psid = cookie_dict.get("__Secure-1PSID", "")
-    secure_1psidts = cookie_dict.get("__Secure-1PSIDTS", "")
+    cfg = load_gemini_config()
     
+    # Cookie overrides from config
+    cfg_cookies = cfg.get("cookies", {})
+    secure_1psid = cfg_cookies.get("__Secure-1PSID", "").strip()
+    secure_1psidts = cfg_cookies.get("__Secure-1PSIDTS", "").strip()
+    
+    # If config doesn't have custom ones, parse from cookies_str (extension fallback)
     if not secure_1psid or not secure_1psidts:
-        print("Missing required cookies (__Secure-1PSID or __Secure-1PSIDTS) in cookies_str!")
+        cookie_dict = {}
+        for c in cookies_str.split(';'):
+            if '=' in c:
+                k, v = c.strip().split('=', 1)
+                cookie_dict[k] = v
+        
+        if not secure_1psid: secure_1psid = cookie_dict.get("__Secure-1PSID", "")
+        if not secure_1psidts: secure_1psidts = cookie_dict.get("__Secure-1PSIDTS", "")
+        
+    if not secure_1psid or not secure_1psidts:
+        print("Missing required cookies (__Secure-1PSID or __Secure-1PSIDTS) in cookies_str and config!")
         return []
 
     client = GeminiClient(
@@ -32,10 +41,10 @@ async def generate_gemini_image(prompt: str, cookies_str: str, snlm0e: str, auth
         # proxy="http://your-proxy:port" # Uncomment if proxy is needed from config
     )
     
+    timeout_val = cfg.get("timeout", 120)
     try:
-        # Increase timeout to 120s to ensure Gemini has enough time to generate the image
         await client.init(
-            timeout=120,
+            timeout=timeout_val,
             auto_close=False,
             auto_refresh=True,
             verbose=False
@@ -46,30 +55,30 @@ async def generate_gemini_image(prompt: str, cookies_str: str, snlm0e: str, auth
 
     request_uuid = str(uuid.uuid4()).upper()
     
+    # Build model_header
+    raw_header = cfg.get("model_header", {})
+    model_header = {}
+    for k, v in raw_header.items():
+        if isinstance(v, str):
+            model_header[k] = v.replace("{request_uuid}", request_uuid)
+        else:
+            model_header[k] = v
+
+    # Build image_gen_fields (convert string keys to int for python dict compatibility)
+    from typing import Any
+    raw_gen_fields = cfg.get("image_gen_fields", {})
+    image_gen_fields: dict[Any, Any] = {}
+    for k, v in raw_gen_fields.items():
+        val = v.replace("{request_uuid}", request_uuid) if isinstance(v, str) else v
+        try:
+            image_gen_fields[int(k)] = val
+        except ValueError:
+            image_gen_fields[k] = val
+            
     model_dict = {
-        "model_name": "gemini-image-gen",
-        "model_header": {
-            "x-goog-ext-73010989-jspb": "[0]",
-            "x-goog-ext-525001261-jspb": f'[1,null,null,null,"",null,null,0,[4],null,null,2]',
-            "x-goog-ext-525005358-jspb": f'["{request_uuid}",1]',
-            "x-goog-ext-73010990-jspb": "[0]",
-        },
-        "image_gen_fields": {
-            1: ["vi"],
-            6: [1],
-            10: 1,
-            11: 0,
-            17: [[0]],
-            18: 0,
-            27: 1,
-            30: [4],
-            41: [1],
-            49: 14,
-            53: 0,
-            59: request_uuid,
-            61: [],
-            68: 2,
-        },
+        "model_name": cfg.get("model_code", "gemini-image-gen"),
+        "model_header": model_header,
+        "image_gen_fields": image_gen_fields,
     }
     
     # Force gemini to use the drawing tool if the prompt is just a noun

@@ -1,0 +1,23 @@
+{
+    "endpoint": "https://gemini.google.com/_/BardChatUi/data/assistant.lamda.BardFrontendService/StreamGenerate",
+    "model_code": "gemini-2.0-flash-exp",
+    "bl": "boq_assistant-bard-web-server_20260313.06_p1",
+    "f_sid": "",
+    "timeout": 120,
+    "cookies": {
+        "__Secure-1PSID": "",
+        "__Secure-1PSIDTS": ""
+    },
+    "model_header": {
+        "x-goog-ext-73010989-jspb": "[0]",
+        "x-goog-ext-525001261-jspb": "[1,null,null,null,\"\",null,null,0,[4],null,null,2]",
+        "x-goog-ext-525005358-jspb": "[\"{request_uuid}\",1]",
+        "x-goog-ext-73010990-jspb": "[0]"
+    },
+    "image_gen_fields": {
+        "model_image": "",
+        "model_name": "",
+        "version": "",
+        "routing_rule": ""
+    }
+}
