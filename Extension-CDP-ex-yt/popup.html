@@ -3,33 +3,59 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CDP RPA Worker</title>
+  <title>CDP Worker</title>
   <style>
     @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg:        #0d1117;
-      --surface:   #161b22;
-      --border:    #30363d;
-      --text:      #e6edf3;
-      --muted:     #7d8590;
-      --green:     #3fb950;
-      --green-dim: #1a4729;
-      --red:       #f85149;
-      --red-dim:   #4b1113;
-      --blue:      #58a6ff;
-      --yellow:    #d29922;
-      --purple:    #a371f7;
+      --bg: #09090b;
+      --surface: rgba(24, 24, 27, 0.6);
+      --surface-hover: rgba(39, 39, 42, 0.8);
+      --border: rgba(255, 255, 255, 0.08);
+      --text: #fafafa;
+      --muted: #a1a1aa;
+      --green: #10b981;
+      --red: #ef4444;
+      --blue: #3b82f6;
+      --yellow: #f59e0b;
+      --accent: #6366f1;
+      --glass-blur: 16px;
     }
 
     body {
-      width: 340px;
+      width: 360px;
+      min-height: 500px;
       background: var(--bg);
       color: var(--text);
       font-family: 'Inter', system-ui, sans-serif;
       font-size: 13px;
+      position: relative;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Ambient animated background glows */
+    body::before, body::after {
+      content: '';
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      z-index: -1;
+      opacity: 0.4;
+      pointer-events: none;
+    }
+    body::before {
+      width: 200px; height: 200px;
+      background: rgba(99, 102, 241, 0.5); /* accent */
+      top: -50px; left: -50px;
+    }
+    body::after {
+      width: 250px; height: 250px;
+      background: rgba(16, 185, 129, 0.2); /* green */
+      bottom: -100px; right: -50px;
     }
 
     /* ── Header ── */
@@ -37,210 +63,275 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      padding: 12px 14px 10px;
+      padding: 16px;
+      background: rgba(9, 9, 11, 0.7);
+      backdrop-filter: blur(var(--glass-blur));
       border-bottom: 1px solid var(--border);
-      background: var(--surface);
+      z-index: 10;
     }
-    .brand { display: flex; align-items: center; gap: 8px; }
+    .brand { display: flex; align-items: center; gap: 12px; }
     .brand-icon {
-      width: 26px; height: 26px;
-      background: linear-gradient(135deg, #58a6ff 0%, #1f6feb 100%);
-      border-radius: 7px;
-      display: flex; align-items: center; justify-content: center;
-      font-size: 14px;
+      width: 32px; height: 32px;
+      border-radius: 8px;
+      object-fit: contain;
+      box-shadow: 0 0 15px rgba(99, 102, 241, 0.4);
     }
-    .brand-name  { font-weight: 700; font-size: 13px; }
-    .brand-sub   { font-size: 10px; color: var(--muted); }
+    .brand-name { 
+      font-weight: 700; 
+      font-size: 14px; 
+      letter-spacing: -0.3px;
+      background: linear-gradient(90deg, #fff, #a1a1aa);
+      -webkit-background-clip: text;
+      color: transparent;
+    }
+    .brand-sub { font-size: 11px; color: var(--muted); margin-top: 2px;}
 
-    /* ── Toggle ── */
-    .toggle-wrap { display: flex; align-items: center; gap: 7px; }
-    .toggle-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
-    .toggle { position: relative; width: 40px; height: 22px; }
+    /* ── Glowing Toggle ── */
+    .toggle-wrap { display: flex; align-items: center; gap: 8px; }
+    .toggle-label { 
+      font-size: 11px; font-weight: 700; color: var(--muted); 
+      text-transform: uppercase; letter-spacing: 0.5px; 
+    }
+    .toggle { position: relative; width: 44px; height: 24px; }
     .toggle input { opacity: 0; width: 0; height: 0; }
-    .slider { position: absolute; inset: 0; background: var(--border); border-radius: 22px; cursor: pointer; transition: background .2s; }
-    .slider::before { content: ''; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
-    input:checked + .slider { background: var(--green); }
-    input:checked + .slider::before { transform: translateX(18px); }
+    .slider { 
+      position: absolute; inset: 0; 
+      background: rgba(255,255,255,0.1); 
+      border-radius: 24px; cursor: pointer; transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      border: 1px solid var(--border);
+    }
+    .slider::before { 
+      content: ''; position: absolute; width: 16px; height: 16px; 
+      left: 3px; top: 3px; background: #fff; border-radius: 50%; 
+      transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1); 
+      box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+    }
+    input:checked + .slider { 
+      background: var(--green); 
+      border-color: var(--green);
+      box-shadow: 0 0 12px rgba(16, 185, 129, 0.4);
+    }
+    input:checked + .slider::before { transform: translateX(20px); }
 
-    /* ── Tabs ── */
+    /* ── Modern Segmented Tabs ── */
     .tab-bar {
       display: flex;
-      border-bottom: 1px solid var(--border);
-      background: var(--surface);
+      padding: 12px 16px;
+      gap: 8px;
     }
     .tab-btn {
       flex: 1;
       padding: 8px 0;
-      font-size: 11px;
+      font-size: 12px;
       font-weight: 600;
-      text-transform: uppercase;
-      letter-spacing: 0.5px;
       color: var(--muted);
-      background: none;
-      border: none;
-      border-bottom: 2px solid transparent;
+      background: rgba(255, 255, 255, 0.03);
+      border: 1px solid var(--border);
+      border-radius: 8px;
       cursor: pointer;
-      transition: color .15s, border-color .15s;
+      transition: all 0.2s;
     }
-    .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
-    .tab-btn:hover:not(.active) { color: var(--text); }
+    .tab-btn.active { 
+      color: #fff; 
+      background: rgba(255, 255, 255, 0.1); 
+      border-color: rgba(255, 255, 255, 0.2);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+    .tab-btn:hover:not(.active) { background: rgba(255, 255, 255, 0.06); color: #fff; }
 
     /* ── Tab Content ── */
-    .tab-panel { display: none; }
-    .tab-panel.active { display: block; }
+    .tab-panels { flex: 1; overflow-y: auto; }
+    .tab-panels::-webkit-scrollbar { width: 4px; }
+    .tab-panels::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    .tab-panel { display: none; padding: 0 16px 16px; flex-direction: column; gap: 12px; }
+    .tab-panel.active { display: flex; animation: fadeIn 0.3s ease; }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(5px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
 
-    /* ── Content ── */
-    .content { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+    /* ── Glass Cards ── */
+    .card { 
+      background: var(--surface); 
+      backdrop-filter: blur(var(--glass-blur));
+      border: 1px solid var(--border); 
+      border-radius: 12px; 
+      padding: 14px; 
+      box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+    }
+    .card-title { 
+      font-size: 11px; font-weight: 600; color: var(--muted); 
+      text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 12px; 
+      display: flex; justify-content: space-between; align-items: center;
+    }
 
-    /* ── Card ── */
-    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: 11px 13px; }
-    .card-title { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 9px; }
+    /* Connection Row */
+    .conn-row { display: flex; align-items: center; gap: 12px; background: rgba(0,0,0,0.2); padding: 10px 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.02); }
+    .dot-wrapper { position: relative; width: 10px; height: 10px; }
+    .dot { width: 10px; height: 10px; border-radius: 50%; background: var(--muted); position: absolute; }
+    .dot.connected { background: var(--green); box-shadow: 0 0 8px var(--green); }
+    .dot.connecting { background: var(--yellow); box-shadow: 0 0 8px var(--yellow); }
+    .dot.disconnected { background: var(--red); box-shadow: 0 0 8px var(--red); }
+    
+    /* Ping pulse effect */
+    .dot.connected::after {
+      content: ''; position: absolute; inset: -4px; border-radius: 50%;
+      border: 2px solid var(--green); opacity: 0;
+      animation: ripple 2s infinite cubic-bezier(0.4, 0, 0.2, 1);
+    }
+    @keyframes ripple {
+      0% { transform: scale(0.5); opacity: 1; }
+      100% { transform: scale(2); opacity: 0; }
+    }
 
-    /* Connection */
-    .conn-row { display: flex; align-items: center; justify-content: space-between; }
-    .conn-left { display: flex; align-items: center; gap: 8px; }
-    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--muted); }
-    .dot.connected    { background: var(--green);  box-shadow: 0 0 6px var(--green);  animation: pulse 2s infinite; }
-    .dot.connecting   { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); animation: pulse 1s infinite; }
-    .dot.disconnected { background: var(--red); }
-    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
-    .conn-status { font-weight: 600; }
-    .conn-status.connected    { color: var(--green); }
-    .conn-status.connecting   { color: var(--yellow); }
+    .conn-status { font-weight: 600; font-size: 13px; margin-bottom: 2px; }
+    .conn-status.connected { color: var(--green); }
+    .conn-status.connecting { color: var(--yellow); }
     .conn-status.disconnected { color: var(--red); }
-    .conn-url { font-size: 10px; color: var(--muted); font-family: monospace; }
+    .conn-url { font-size: 11px; color: var(--muted); font-family: 'JetBrains Mono', 'Courier New', monospace; }
 
-    /* Stats */
-    .stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px; }
-    .stat { background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 8px; text-align: center; }
-    .stat-value { font-size: 19px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
-    .stat-label { font-size: 10px; color: var(--muted); font-weight: 500; }
-    .stat-value.ok    { color: var(--green); }
-    .stat-value.fail  { color: var(--red); }
-    .stat-value.queue { color: var(--blue); }
+    /* Stats Grid */
+    .stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; }
+    .stat { 
+      background: rgba(0,0,0,0.2); border: 1px solid rgba(255,255,255,0.03); 
+      border-radius: 8px; padding: 12px 8px; text-align: center; 
+      transition: transform 0.2s;
+    }
+    .stat:hover { transform: translateY(-2px); background: rgba(0,0,0,0.3); }
+    .stat-value { font-size: 22px; font-weight: 800; line-height: 1; margin-bottom: 4px; }
+    .stat-label { font-size: 11px; color: var(--muted); font-weight: 500; text-transform: uppercase; letter-spacing: 0.5px;}
+    
+    .stat-value.ok { 
+      background: linear-gradient(135deg, #34d399, #10b981); 
+      -webkit-background-clip: text; color: transparent; 
+    }
+    .stat-value.fail { 
+      background: linear-gradient(135deg, #fbbf24, #ef4444); 
+      -webkit-background-clip: text; color: transparent; 
+    }
+    .stat-value.queue { 
+      background: linear-gradient(135deg, #60a5fa, #3b82f6); 
+      -webkit-background-clip: text; color: transparent; 
+    }
 
-    /* Log box */
+    /* Inner scrolled boxes */
+    .inner-box {
+      background: rgba(0,0,0,0.3);
+      border: 1px solid rgba(255,255,255,0.03);
+      border-radius: 8px;
+      padding: 10px;
+    }
     .log-box {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 7px;
-      padding: 7px 9px;
-      max-height: 130px;
+      max-height: 140px;
       overflow-y: auto;
-      font-family: 'Courier New', monospace;
+      font-family: 'JetBrains Mono', 'Courier New', monospace;
       font-size: 11px;
-      line-height: 1.5;
+      line-height: 1.6;
       color: var(--muted);
     }
-    .log-box::-webkit-scrollbar { width: 3px; }
-    .log-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
-    .log-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .log-line.info    { color: var(--blue); }
-    .log-line.success { color: var(--green); }
-    .log-line.error   { color: var(--red); }
-    .log-line.warn    { color: var(--yellow); }
+    .log-box::-webkit-scrollbar { width: 4px; }
+    .log-box::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+    .log-line { word-break: break-word; margin-bottom: 2px; }
+    .log-line.info    { color: #60a5fa; }
+    .log-line.success { color: #34d399; }
+    .log-line.error   { color: #ef4444; }
+    .log-line.warn    { color: #fbbf24; }
 
-    /* ── Debug Tab ── */
-
-    /* Screenshot gallery */
+    /* Debug Tab Components */
     .screenshot-gallery {
-      display: flex;
-      flex-direction: column;
-      gap: 8px;
-      max-height: 260px;
-      overflow-y: auto;
+      display: flex; flex-direction: column; gap: 10px;
+      max-height: 240px; overflow-y: auto;
     }
-    .screenshot-gallery::-webkit-scrollbar { width: 3px; }
-    .screenshot-gallery::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .screenshot-gallery::-webkit-scrollbar { width: 4px; }
+    .screenshot-gallery::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
+    
     .shot-item {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 7px;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.05);
+      border-radius: 8px;
       overflow: hidden;
     }
     .shot-title {
-      padding: 4px 8px;
-      font-family: monospace;
+      padding: 6px 10px;
+      font-family: 'JetBrains Mono', monospace;
       font-size: 10px;
       color: var(--muted);
-      border-bottom: 1px solid var(--border);
+      background: rgba(255,255,255,0.02);
+      border-bottom: 1px solid rgba(255,255,255,0.05);
       display: flex;
       justify-content: space-between;
       align-items: center;
     }
-    .shot-title a {
-      color: var(--blue);
-      font-size: 10px;
-      text-decoration: none;
-      cursor: pointer;
-    }
-    .shot-title a:hover { text-decoration: underline; }
+    .shot-title a { color: var(--blue); text-decoration: none; transition: color 0.15s; }
+    .shot-title a:hover { color: #60a5fa; text-decoration: underline; }
     .shot-img {
-      width: 100%;
-      display: block;
-      max-height: 140px;
-      object-fit: cover;
-      cursor: zoom-in;
+      width: 100%; display: block; max-height: 150px; object-fit: cover;
+      cursor: zoom-in; transition: opacity 0.2s;
     }
-    .shot-img:hover { opacity: 0.9; }
-    .no-data { font-size: 11px; color: var(--muted); text-align: center; padding: 12px 0; }
+    .shot-img:hover { opacity: 0.8; }
+    .no-data { font-size: 12px; color: var(--muted); text-align: center; padding: 16px 0; font-style: italic; }
 
-    /* Debug log list */
     .debug-log-list {
-      max-height: 180px;
-      overflow-y: auto;
-      display: flex;
-      flex-direction: column;
-      gap: 3px;
+      max-height: 180px; overflow-y: auto;
+      display: flex; flex-direction: column; gap: 6px;
     }
-    .debug-log-list::-webkit-scrollbar { width: 3px; }
-    .debug-log-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .debug-log-list::-webkit-scrollbar { width: 4px; }
+    .debug-log-list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.1); border-radius: 4px; }
     .dlog-item {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 5px;
-      padding: 5px 8px;
-      font-family: monospace;
-      font-size: 11px;
-      line-height: 1.4;
+      background: rgba(0,0,0,0.2);
+      border: 1px solid rgba(255,255,255,0.03);
+      border-radius: 6px;
+      padding: 8px 10px;
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 11px; line-height: 1.5;
     }
     .dlog-item.warn  { border-left: 3px solid var(--yellow); }
-    .dlog-item.error { border-left: 3px solid var(--red); }
+    .dlog-item.error { border-left: 3px solid var(--red); background: rgba(239, 68, 68, 0.05); }
     .dlog-item.info  { border-left: 3px solid var(--blue); }
-    .dlog-time { font-size: 9px; color: var(--muted); margin-bottom: 1px; }
+    .dlog-time { font-size: 9px; color: var(--muted); margin-bottom: 4px; opacity: 0.8; }
     .dlog-msg  { color: var(--text); word-break: break-word; white-space: pre-wrap; }
 
     /* ── Footer ── */
     .footer {
-      padding: 8px 14px;
+      padding: 12px 16px;
+      background: rgba(9, 9, 11, 0.8);
+      backdrop-filter: blur(var(--glass-blur));
       border-top: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: space-between;
+      margin-top: auto;
     }
-    .footer-text { font-size: 10px; color: var(--muted); }
-    .btn-row { display: flex; gap: 6px; }
+    .footer-text { font-size: 11px; color: var(--muted); font-weight: 500; }
+    .btn-row { display: flex; gap: 8px; }
+    
     .btn-clear {
-      font-size: 10px; font-weight: 600;
-      color: var(--muted); background: none;
-      border: 1px solid var(--border); border-radius: 5px;
-      padding: 3px 9px; cursor: pointer;
-      transition: color .15s, border-color .15s;
+      font-size: 11px; font-weight: 600;
+      color: var(--text); 
+      background: rgba(255,255,255,0.05);
+      border: 1px solid rgba(255,255,255,0.1); 
+      border-radius: 6px;
+      padding: 6px 12px; cursor: pointer;
+      transition: all 0.2s;
     }
-    .btn-clear:hover { color: var(--text); border-color: var(--muted); }
-    .btn-clear.danger:hover { color: var(--red); border-color: var(--red); }
+    .btn-clear:hover { background: rgba(255,255,255,0.1); border-color: rgba(255,255,255,0.2); }
+    .btn-clear.danger:hover { background: rgba(239, 68, 68, 0.1); color: #fca5a5; border-color: rgba(239, 68, 68, 0.3); }
 
     /* Lightbox */
     #lightbox {
       display: none;
       position: fixed; inset: 0;
-      background: rgba(0,0,0,.85);
+      background: rgba(0,0,0,0.9);
+      backdrop-filter: blur(8px);
       z-index: 9999;
       align-items: center; justify-content: center;
       cursor: zoom-out;
+      opacity: 0;
+      transition: opacity 0.2s;
     }
-    #lightbox.open { display: flex; }
-    #lightbox img { max-width: 100%; max-height: 100%; border-radius: 4px; }
+    #lightbox.open { display: flex; opacity: 1; }
+    #lightbox img { max-width: 90%; max-height: 90%; border-radius: 8px; box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
   </style>
 </head>
 <body>
@@ -248,9 +339,9 @@
   <!-- Header -->
   <div class="header">
     <div class="brand">
-      <div class="brand-icon">⚡</div>
+      <img class="brand-icon" src="icons/icon48.png" alt="Icon" onerror="this.style.display='none'" />
       <div>
-        <div class="brand-name">CDP RPA Worker</div>
+        <div class="brand-name">CDP Worker</div>
         <div class="brand-sub">Distributed Scraping Agent</div>
       </div>
     </div>
@@ -265,24 +356,21 @@
 
   <!-- Tab bar -->
   <div class="tab-bar">
-    <button class="tab-btn active" data-tab="status">📊 Status</button>
-    <button class="tab-btn"        data-tab="debug">🐛 Debug</button>
+    <button class="tab-btn active" data-tab="status">Status</button>
+    <button class="tab-btn"        data-tab="debug">Debug</button>
   </div>
 
-  <!-- ═══ TAB: STATUS ═══ -->
-  <div class="tab-panel active" id="tab-status">
-    <div class="content">
-
+  <div class="tab-panels">
+    <!-- ═══ TAB: STATUS ═══ -->
+    <div class="tab-panel active" id="tab-status">
       <!-- Connection -->
       <div class="card">
         <div class="card-title">WebSocket Connection</div>
         <div class="conn-row">
-          <div class="conn-left">
-            <div class="dot" id="dot"></div>
-            <div>
-              <div class="conn-status" id="conn-status">Connecting…</div>
-              <div class="conn-url"    id="conn-url">ws://localhost:3001</div>
-            </div>
+          <div class="dot-wrapper"><div class="dot connected" id="dot"></div></div>
+          <div>
+            <div class="conn-status connected" id="conn-status">Connecting…</div>
+            <div class="conn-url" id="conn-url">ws://localhost:3001</div>
           </div>
         </div>
       </div>
@@ -298,45 +386,40 @@
       </div>
 
       <!-- Activity Log -->
-      <div class="card">
-        <div class="card-title">Activity Log</div>
-        <div class="log-box" id="log-box">
-          <div class="log-line info">Waiting for background…</div>
+      <div class="card" style="flex: 1; display: flex; flex-direction: column;">
+        <div class="card-title">Live Activity</div>
+        <div class="inner-box log-box" id="log-box" style="flex: 1;">
+          <div class="log-line info">Waiting for background script…</div>
         </div>
       </div>
-
     </div>
-  </div>
 
-  <!-- ═══ TAB: DEBUG ═══ -->
-  <div class="tab-panel" id="tab-debug">
-    <div class="content">
-
+    <!-- ═══ TAB: DEBUG ═══ -->
+    <div class="tab-panel" id="tab-debug">
       <!-- Screenshots -->
       <div class="card">
-        <div class="card-title">📷 Screenshots (<span id="shot-count">0</span>)</div>
+        <div class="card-title">Screenshots (<span id="shot-count">0</span>)</div>
         <div class="screenshot-gallery" id="shot-gallery">
           <div class="no-data">No screenshots yet</div>
         </div>
       </div>
 
       <!-- Debug messages (log_message action) -->
-      <div class="card">
-        <div class="card-title">📋 Debug Messages (<span id="dlog-count">0</span>)</div>
-        <div class="debug-log-list" id="dlog-list">
-          <div class="no-data">No debug messages yet</div>
+      <div class="card" style="flex: 1; display: flex; flex-direction: column;">
+        <div class="card-title">Debug Logs (<span id="dlog-count">0</span>)</div>
+        <div class="debug-log-list inner-box" id="dlog-list" style="flex: 1; max-height: unset;">
+          <div class="no-data">No extension debug logs yet</div>
         </div>
       </div>
-
     </div>
   </div>
 
   <!-- Footer -->
   <div class="footer">
-    <span class="footer-text" id="uptime-text">v1.1.0</span>
+    <span class="footer-text" id="uptime-text">v1.1.0 • Standby</span>
     <div class="btn-row">
       <button class="btn-clear danger" id="btn-clear-shots">Clear Shots</button>
-      <button class="btn-clear" id="btn-clear">Clear Log</button>
+      <button class="btn-clear" id="btn-clear">Clear Logs</button>
     </div>
   </div>
 

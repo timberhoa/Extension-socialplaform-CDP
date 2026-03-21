@@ -120,19 +120,20 @@ async def generate_gemini_image(prompt: str, cookies_str: str, snlm0e: str, auth
                             base_filename = f"{safe_prompt}_{timestamp_str}_{i}"
                             
                             png_path = os.path.join(img_dir, f"{base_filename}.png")
-                            webp_path = os.path.join(img_dir, f"{base_filename}.webp")
+                            # webp_path = os.path.join(img_dir, f"{base_filename}.webp")
                             
-                            # Lưu 2 bản
+                            # Lưu bản PNG
                             pil_img.save(png_path, format="PNG")
-                            pil_img.save(webp_path, format="WEBP", quality=95)
+                            # pil_img.save(webp_path, format="WEBP", quality=95)
                             
-                        # Đẩy cái webp vào danh sách URLs trả về cho UI
-                        urls.append(f"/static/images/{base_filename}.webp")
+                        # Đẩy cái png vào danh sách URLs trả về cho UI
+                        # urls.append(f"/static/images/{base_filename}.webp")
                         urls.append(f"/static/images/{base_filename}.png")
                         
                         # Xoá file tmp gốc
                         try:
-                            if str(saved_path) != str(png_path) and str(saved_path) != str(webp_path):
+                            # if str(saved_path) != str(png_path) and str(saved_path) != str(webp_path):
+                            if str(saved_path) != str(png_path):
                                 os.remove(saved_path)
                         except:
                             pass
