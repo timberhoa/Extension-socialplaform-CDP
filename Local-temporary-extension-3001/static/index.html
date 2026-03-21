@@ -577,20 +577,10 @@
                         <label
                             style="display:block; margin-bottom:0.4rem; color:var(--text-secondary); font-size:0.8rem; font-weight:600;">Prompt</label>
                         <input id="geminiPrompt" type="text" placeholder="Mô tả ảnh bạn muốn tạo..."
-                            style="width:100%; padding:0.6rem 1rem; background:var(--bg-card); border:1px solid var(--border-color); border-radius:6px; color:var(--text-primary); outline:none;">
+                            style="width:100%; padding:0.6rem 1rem; background:var(--bg-card); border:1px solid var(--border-color); border-radius:6px; color:var(--text-primary); outline:none;"
+                            onkeypress="if(event.key === 'Enter') openGeminiAssignModal()">
                     </div>
-                    <div style="min-width:220px; max-width: 300px;">
-                        <label
-                            style="display:block; margin-bottom:0.4rem; color:var(--text-secondary); font-size:0.8rem; font-weight:600;">Chọn Worker (chỉ hiện IDLE)</label>
-                        <div style="margin-bottom: 5px;">
-                            <label style="cursor: pointer; font-size: 0.85rem;"><input type="checkbox" id="geminiSelectAllWorkers"
-                                    onclick="toggleAllGeminiWorkers()"> Chọn tất cả (Select All)</label>
-                        </div>
-                        <div id="geminiWorkerList" class="worker-list"
-                            style="max-height: 100px; overflow-y: auto; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem;">
-                        </div>
-                    </div>
-                    <button onclick="genImg()"
+                    <button onclick="openGeminiAssignModal()"
                         style="padding:0.6rem 1.4rem; background:var(--accent-blue); color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:0.85rem; font-weight:600; transition:all 0.2s;">✨
                         Tạo Ảnh</button>
                     <button onclick="loadGallery()"
@@ -664,6 +654,30 @@
             <div class="modal-actions">
                 <button class="btn-cancel" onclick="closeAssignModal()">Hủy</button>
                 <button class="btn-confirm" onclick="confirmAssign()">Giao việc ✓</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- ═══════ GEMINI ASSIGN MODAL ═══════ -->
+    <div class="modal-overlay" id="geminiAssignModal">
+        <div class="modal-box">
+            <h3>🎨 Chọn Worker để Tạo Ảnh</h3>
+            <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem; word-break: break-word;">
+                Prompt: <strong id="modalGeminiPromptText">—</strong>
+            </p>
+            <label style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.3rem; display: block;">
+                Chọn Worker (chỉ hiện IDLE):
+            </label>
+            <div style="margin-bottom: 5px;">
+                <label style="cursor: pointer; font-size: 0.85rem;"><input type="checkbox" id="geminiSelectAllWorkers"
+                        onclick="toggleAllGeminiWorkers()"> Chọn tất cả (Select All)</label>
+            </div>
+            <div id="geminiWorkerList" class="worker-list"
+                style="max-height: 150px; overflow-y: auto; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; margin-bottom: 1rem;">
+            </div>
+            <div class="modal-actions">
+                <button class="btn-cancel" onclick="closeGeminiAssignModal()">Hủy</button>
+                <button class="btn-confirm" onclick="genImg()">Bắt đầu Tạo Ảnh ✨</button>
             </div>
         </div>
     </div>
@@ -1198,9 +1212,33 @@
 
 
         // ── Gemini Image Gen ─────────────────────────────────────
+        function openGeminiAssignModal() {
+            const prompt = document.getElementById('geminiPrompt').value.trim();
+            if (!prompt) {
+                showToast('❌ Vui lòng nhập prompt trước khi giao việc!', 'error');
+                document.getElementById('geminiPrompt').focus();
+                return;
+            }
+            document.getElementById('modalGeminiPromptText').textContent = prompt;
+            refreshGeminiWorkerList();
+            document.getElementById('geminiAssignModal').classList.add('active');
+        }
+
+        function closeGeminiAssignModal() {
+            document.getElementById('geminiAssignModal').classList.remove('active');
+        }
+
+        document.getElementById('geminiAssignModal').addEventListener('click', function (e) {
+            if (e.target === this) closeGeminiAssignModal();
+        });
+
         function refreshGeminiWorkerList() {
             const list = document.getElementById('geminiWorkerList');
             if (!list) return;
+
+            // Only refresh if modal is open to avoid unnecessary DOM updates in background
+            const modal = document.getElementById('geminiAssignModal');
+            if (!modal || !modal.classList.contains('active')) return;
 
             const checkedBoxes = Array.from(document.querySelectorAll('.gemini-worker-checkbox:checked')).map(cb => cb.value);
 
@@ -1250,6 +1288,7 @@
                         showToast(`⚠️ Có ${data.errors.length} lỗi khi giao việc`, 'error');
                     }
                     document.getElementById('geminiPrompt').value = '';
+                    closeGeminiAssignModal();
                     setTimeout(loadGallery, 15000); // tải lại sau 15s
                 } else {
                     showToast(`❌ ${data.detail || 'Lỗi dispatch'}`, 'error');
