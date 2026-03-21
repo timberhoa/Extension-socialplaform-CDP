@@ -38,8 +38,45 @@ async def get_workers():
 
 @router.get("/tasks")
 async def get_tasks():
+    from .tasks import get_tasks_summary
     return get_tasks_summary()
 
+@router.get("/tasks/{task_id}")
+async def get_task_details(task_id: str):
+    from .tasks import get_task_by_id
+    task = get_task_by_id(task_id)
+    if not task:
+        raise HTTPException(status_code=404, detail="Không tìm thấy kịch bản")
+    return task
+
+@router.post("/tasks")
+async def save_task(task_data: dict):
+    from .tasks import custom_tasks, save_custom_tasks
+    
+    task_id = task_data.get("task_id")
+    if not task_id:
+        raise HTTPException(status_code=400, detail="Thiếu task_id")
+        
+    # Cập nhật hoặc thêm mới custom task
+    for idx, t in enumerate(custom_tasks):
+        if t["task_id"] == task_id:
+            custom_tasks[idx] = task_data
+            save_custom_tasks()
+            return {"status": "success", "message": f"Đã cập nhật kịch bản {task_id}"}
+            
+    custom_tasks.append(task_data)
+    save_custom_tasks()
+    return {"status": "success", "message": f"Đã lưu kịch bản {task_id} mới"}
+
+@router.delete("/tasks/{task_id}")
+async def delete_task(task_id: str):
+    from .tasks import custom_tasks, save_custom_tasks
+    for idx, t in enumerate(custom_tasks):
+        if t["task_id"] == task_id:
+            custom_tasks.pop(idx)
+            save_custom_tasks()
+            return {"status": "success", "message": f"Đã xóa kịch bản {task_id}"}
+    raise HTTPException(status_code=404, detail="Không tìm thấy kịch bản (chỉ có thể xóa kịch bản tùy chỉnh)")
 
 from .database import get_all_results, delete_result, get_image_results
 

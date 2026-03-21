@@ -16,7 +16,18 @@ Cấu trúc thư mục:
 """
 
 import asyncio
+import os
 from contextlib import asynccontextmanager
+
+# Vô hiệu hóa QuickEdit Mode trên Windows để tránh tình trạng terminal click chuột làm treo server
+if os.name == 'nt':
+    import ctypes
+    kernel32 = ctypes.windll.kernel32
+    handle = kernel32.GetStdHandle(-10) # STD_INPUT_HANDLE
+    mode = ctypes.c_uint32()
+    kernel32.GetConsoleMode(handle, ctypes.byref(mode))
+    mode.value &= ~0x0040 # ENABLE_QUICK_EDIT_MODE
+    kernel32.SetConsoleMode(handle, mode)
 
 from fastapi import FastAPI, WebSocket
 from fastapi.staticfiles import StaticFiles

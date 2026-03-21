@@ -1,6 +1,9 @@
+import os
+import json
+
 """
 tasks.py — Kho lưu trữ Task JSON mẫu
-Cấu hình các luồng tự động hoá (navigate, wait, evaluate) dưới dạng kịch bản JSON tĩnh được server chuyển về cho Extension thực thi.
+Cấu hình các luồng tự động hoá (navigate, wait, evaluate) dưới dạng kịch bản JSON tĩnh và custom_tasks.
 """
 
 SAMPLE_TASKS = [
@@ -237,10 +240,35 @@ SAMPLE_TASKS = [
     }
 ]
 
+CUSTOM_TASKS_FILE = "data/custom_tasks.json"
+custom_tasks = []
+
+def load_custom_tasks():
+    global custom_tasks
+    if os.path.exists(CUSTOM_TASKS_FILE):
+        try:
+            with open(CUSTOM_TASKS_FILE, "r", encoding="utf-8") as f:
+                custom_tasks = json.load(f)
+        except Exception as e:
+            print(f"Lỗi khi load {CUSTOM_TASKS_FILE}: {e}")
+            custom_tasks = []
+    else:
+        custom_tasks = []
+
+def save_custom_tasks():
+    os.makedirs(os.path.dirname(CUSTOM_TASKS_FILE), exist_ok=True)
+    with open(CUSTOM_TASKS_FILE, "w", encoding="utf-8") as f:
+        json.dump(custom_tasks, f, ensure_ascii=False, indent=2)
+
+# Khởi tạo nạp custom tasks khi chạy
+load_custom_tasks()
+
+def get_all_tasks():
+    return SAMPLE_TASKS + custom_tasks
 
 def get_task_by_id(task_id: str) -> dict | None:
     """Tìm task theo task_id. Trả về None nếu không tìm thấy."""
-    for task in SAMPLE_TASKS:
+    for task in get_all_tasks():
         if task["task_id"] == task_id:
             return task
     return None
@@ -249,6 +277,6 @@ def get_task_by_id(task_id: str) -> dict | None:
 def get_tasks_summary() -> list:
     """Trả về danh sách rút gọn (không có steps) cho REST API."""
     return [
-        {"task_id": t["task_id"], "name": t["name"], "steps_count": len(t["steps"]), "category": t.get("category", "sample")}
-        for t in SAMPLE_TASKS
+        {"task_id": t.get("task_id"), "name": t.get("name"), "steps_count": len(t.get("steps", [])), "category": t.get("category", "sample" if t in SAMPLE_TASKS else "custom")}
+        for t in get_all_tasks()
     ]

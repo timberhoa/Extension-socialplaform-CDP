@@ -1,10 +1,10 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="vi">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>🏭 Browser Automation Farm — Control Panel</title>
+    <title>≡ƒÅ¡ Browser Automation Farm ΓÇö Control Panel</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
@@ -35,7 +35,7 @@
             margin: 0;
         }
 
-        /* ─── Header ─── */
+        /* ΓöÇΓöÇΓöÇ Header ΓöÇΓöÇΓöÇ */
         .app-header {
             background: linear-gradient(135deg, #1e1b4b 0%, #0f172a 100%);
             border-bottom: 1px solid var(--border-color);
@@ -82,7 +82,7 @@
             }
         }
 
-        /* ─── Cards ─── */
+        /* ΓöÇΓöÇΓöÇ Cards ΓöÇΓöÇΓöÇ */
         .panel-card {
             background: var(--bg-card);
             border: 1px solid var(--border-color);
@@ -103,7 +103,7 @@
             gap: 0.5rem;
         }
 
-        /* ─── Table ─── */
+        /* ΓöÇΓöÇΓöÇ Table ΓöÇΓöÇΓöÇ */
         .table-dark-custom {
             width: 100%;
             border-collapse: separate;
@@ -132,7 +132,7 @@
             background: var(--bg-card-hover);
         }
 
-        /* ─── State Badges ─── */
+        /* ΓöÇΓöÇΓöÇ State Badges ΓöÇΓöÇΓöÇ */
         .badge-state {
             padding: 0.3rem 0.75rem;
             border-radius: 20px;
@@ -172,7 +172,7 @@
             border: 1px solid rgba(107, 114, 128, 0.3);
         }
 
-        /* ─── Task Cards ─── */
+        /* ΓöÇΓöÇΓöÇ Task Cards ΓöÇΓöÇΓöÇ */
         .task-item {
             background: var(--bg-card-hover);
             border: 1px solid var(--border-color);
@@ -199,7 +199,7 @@
             font-size: 0.8rem;
         }
 
-        /* ─── Tabs ─── */
+        /* ΓöÇΓöÇΓöÇ Tabs ΓöÇΓöÇΓöÇ */
         .tab-nav {
             display: flex;
             gap: 1rem;
@@ -230,7 +230,7 @@
             border-bottom-color: var(--accent-blue);
         }
 
-        /* ─── Buttons ─── */
+        /* ΓöÇΓöÇΓöÇ Buttons ΓöÇΓöÇΓöÇ */
         .btn-assign {
             background: var(--accent-blue);
             color: white;
@@ -271,7 +271,7 @@
             background: rgba(239, 68, 68, 0.15);
         }
 
-        /* ─── Stats Bar ─── */
+        /* ΓöÇΓöÇΓöÇ Stats Bar ΓöÇΓöÇΓöÇ */
         .stats-bar {
             display: flex;
             gap: 1.5rem;
@@ -299,7 +299,7 @@
             letter-spacing: 0.05em;
         }
 
-        /* ─── Modal Overlay ─── */
+        /* ΓöÇΓöÇΓöÇ Modal Overlay ΓöÇΓöÇΓöÇ */
         .modal-overlay {
             position: fixed;
             top: 0;
@@ -374,7 +374,7 @@
             background: #16a34a;
         }
 
-        /* ─── Toast ─── */
+        /* ΓöÇΓöÇΓöÇ Toast ΓöÇΓöÇΓöÇ */
         .toast-container {
             position: fixed;
             top: 1rem;
@@ -429,7 +429,7 @@
             font-size: 2rem;
         }
 
-        /* ─── JSON Viewer ─── */
+        /* ΓöÇΓöÇΓöÇ JSON Viewer ΓöÇΓöÇΓöÇ */
         .json-viewer {
             background: #0f1117;
             padding: 1rem;
@@ -443,7 +443,7 @@
             border: 1px solid var(--border-color);
         }
 
-        /* ─── Gemini Gallery Custom ─── */
+        /* ΓöÇΓöÇΓöÇ Gemini Gallery Custom ΓöÇΓöÇΓöÇ */
         .gemini-gallery {
             display: grid;
             grid-template-columns: repeat(4, 1fr);
@@ -507,80 +507,15 @@
         .gemini-download-btn:hover {
             background: #2563eb;
         }
-
-        /* ─── Layout ─── */
-        .app-container {
-            display: flex;
-            height: calc(100vh - 70px);
-        }
-        .sidebar {
-            width: 250px;
-            background: var(--bg-card);
-            border-right: 1px solid var(--border-color);
-            padding: 1rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.5rem;
-        }
-        .sidebar-item {
-            padding: 0.75rem 1rem;
-            border-radius: 6px;
-            cursor: pointer;
-            font-size: 0.9rem;
-            font-weight: 500;
-            transition: background 0.2s;
-        }
-        .sidebar-item:hover {
-            background: var(--bg-card-hover);
-        }
-        .sidebar-item.active {
-            background: rgba(79, 124, 255, 0.1);
-            color: var(--accent-blue);
-            border-left: 3px solid var(--accent-blue);
-        }
-        .main-content {
-            flex: 1;
-            overflow-y: auto;
-            padding: 1.5rem;
-        }
-
-        /* ─── Script Builder ─── */
-        .builder-step {
-            background: var(--bg-dark);
-            border: 1px solid var(--border-color);
-            border-radius: 8px;
-            padding: 1rem;
-            margin-bottom: 1rem;
-            position: relative;
-        }
-        .builder-step-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 0.5rem;
-            font-weight: 600;
-        }
-        .builder-step-actions {
-            display: flex;
-            gap: 0.5rem;
-        }
-        .step-input {
-            width: 100%;
-            padding: 0.5rem;
-            background: var(--bg-card);
-            border: 1px solid var(--border-color);
-            border-radius: 4px;
-            color: var(--text-primary);
-            margin-bottom: 0.5rem;
-        }
     </style>
 </head>
 
 <body>
 
-    <!-- ═══════ HEADER ═══════ -->
+    <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ HEADER ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
     <header class="app-header">
         <h1>
-            <span class="emoji">🏭</span>
+            <span class="emoji">≡ƒÅ¡</span>
             Browser Automation Farm
             <span class="status-dot online" id="serverDot"></span>
         </h1>
@@ -589,36 +524,22 @@
         </div>
     </header>
 
-    <!-- ═══════ APP CONTAINER ═══════ -->
-    <div class="app-container">
-        <!-- ═══════ SIDEBAR ═══════ -->
-        <aside class="sidebar">
-            <div class="sidebar-item active" onclick="switchView('dashboard')" id="nav-dashboard">
-                📊 Dashboard
-            </div>
-            <div class="sidebar-item" onclick="switchView('builder')" id="nav-builder">
-                🛠️ Script Builder
-            </div>
-        </aside>
-
-        <!-- ═══════ MAIN CONTENT ═══════ -->
-        <div class="main-content">
-            <!-- ═══════ DASHBOARD VIEW ═══════ -->
-            <div id="dashboardView">
+    <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ MAIN CONTENT ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
+    <div style="max-width: 1200px; margin: 0 auto; padding: 1.5rem;">
 
         <!-- Stats -->
         <div class="stats-bar">
             <div class="stat-box">
                 <div class="stat-value" id="statTotal" style="color: var(--accent-blue);">0</div>
-                <div class="stat-label">Tổng Workers</div>
+                <div class="stat-label">Tß╗òng Workers</div>
             </div>
             <div class="stat-box">
                 <div class="stat-value" id="statIdle" style="color: var(--accent-green);">0</div>
-                <div class="stat-label">Idle (Rảnh)</div>
+                <div class="stat-label">Idle (Rß║únh)</div>
             </div>
             <div class="stat-box">
                 <div class="stat-value" id="statBusy" style="color: var(--accent-cyan);">0</div>
-                <div class="stat-label">Busy (Bận)</div>
+                <div class="stat-label">Busy (Bß║¡n)</div>
             </div>
             <div class="stat-box">
                 <div class="stat-value" id="statError" style="color: var(--accent-red);">0</div>
@@ -628,22 +549,21 @@
 
         <!-- Workers Table -->
         <div class="panel-card">
-            <h2>👷 Danh sách Workers (Trình duyệt)</h2>
+            <h2>≡ƒæ╖ Danh s├ích Workers (Tr├¼nh duyß╗çt)</h2>
             <div id="workersContainer">
                 <div class="empty-state">
-                    <div class="emoji">📡</div>
-                    <p>Chưa có Worker nào kết nối.<br>Hãy cài Extension và mở Chrome.</p>
+                    <div class="emoji">≡ƒôí</div>
+                    <p>Ch╞░a c├│ Worker n├áo kß║┐t nß╗æi.<br>H├úy c├ái Extension v├á mß╗ƒ Chrome.</p>
                 </div>
             </div>
         </div>
 
         <!-- Tasks Panel -->
         <div class="panel-card">
-            <h2 style="margin-bottom: 0.5rem;">📋 Danh sách Kịch bản (Tasks)</h2>
-            <div class="tab-nav" style="margin-bottom: 1rem;">
-                <button class="tab-btn active" onclick="switchTaskTab('sample')">Kịch bản Mẫu</button>
-                <button class="tab-btn" onclick="switchTaskTab('executable')">Kịch bản Thực thi</button>
-                <button class="tab-btn" onclick="switchTaskTab('custom')">Kịch bản Tùy chỉnh (Custom)</button>
+            <h2 style="margin-bottom: 0.5rem;">≡ƒôï Danh s├ích Kß╗ïch bß║ún (Tasks)</h2>
+            <div class="tab-nav">
+                <button class="tab-btn active" onclick="switchTaskTab('sample')">Kß╗ïch bß║ún Mß║½u</button>
+                <button class="tab-btn" onclick="switchTaskTab('executable')">Kß╗ïch bß║ún Thß╗▒c thi</button>
             </div>
 
             <!-- Gemini Image Gen Section -->
@@ -651,27 +571,27 @@
                 style="display: none; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 8px; padding: 1.25rem; margin-bottom: 1.5rem;">
                 <h3
                     style="font-size: 0.95rem; font-weight: 600; margin-bottom: 1rem; color: var(--text-primary); text-transform: uppercase; letter-spacing: 0.05em;">
-                    <span class="emoji" style="margin-right:0.3rem;">🎨</span> Tạo Ảnh Gemini</h3>
+                    <span class="emoji" style="margin-right:0.3rem;">≡ƒÄ¿</span> Tß║ío ß║ónh Gemini</h3>
                 <div style="display:flex; gap:1rem; flex-wrap:wrap; align-items:flex-end; margin-bottom:1rem;">
                     <div style="flex:1; min-width:220px;">
                         <label
                             style="display:block; margin-bottom:0.4rem; color:var(--text-secondary); font-size:0.8rem; font-weight:600;">Prompt</label>
-                        <input id="geminiPrompt" type="text" placeholder="Mô tả ảnh bạn muốn tạo..."
+                        <input id="geminiPrompt" type="text" placeholder="M├┤ tß║ú ß║únh bß║ín muß╗æn tß║ío..."
                             style="width:100%; padding:0.6rem 1rem; background:var(--bg-card); border:1px solid var(--border-color); border-radius:6px; color:var(--text-primary); outline:none;"
                             onkeypress="if(event.key === 'Enter') openGeminiAssignModal()">
                     </div>
                     <button onclick="openGeminiAssignModal()"
-                        style="padding:0.6rem 1.4rem; background:var(--accent-blue); color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:0.85rem; font-weight:600; transition:all 0.2s;">✨
-                        Tạo Ảnh</button>
+                        style="padding:0.6rem 1.4rem; background:var(--accent-blue); color:#fff; border:none; border-radius:6px; cursor:pointer; font-size:0.85rem; font-weight:600; transition:all 0.2s;">Γ£¿
+                        Tß║ío ß║ónh</button>
                     <button onclick="loadGallery()"
-                        style="padding:0.6rem 1.4rem; background:var(--bg-card-hover); border:1px solid var(--border-color); color:var(--text-primary); border-radius:6px; cursor:pointer; font-size:0.85rem; font-weight:600; transition:all 0.2s;">🔄
-                        Làm mới</button>
+                        style="padding:0.6rem 1.4rem; background:var(--bg-card-hover); border:1px solid var(--border-color); color:var(--text-primary); border-radius:6px; cursor:pointer; font-size:0.85rem; font-weight:600; transition:all 0.2s;">≡ƒöä
+                        L├ám mß╗¢i</button>
                 </div>
                 <!-- Gallery -->
                 <div id="geminiGallery" class="gemini-gallery"></div>
                 <p id="geminiGalleryEmpty"
                     style="color:var(--text-secondary); font-size:0.85rem; display:none; text-align:center; padding:1rem 0;">
-                    Chưa có ảnh nào. Vui lòng nhập prompt và chọn tạo ảnh!</p>
+                    Ch╞░a c├│ ß║únh n├áo. Vui l├▓ng nhß║¡p prompt v├á chß╗ìn tß║ío ß║únh!</p>
                 <div id="geminiPaginationControls"
                     style="display: none; justify-content: flex-end; align-items: center; margin-top: 1rem; gap: 1rem;">
                     <div style="font-size: 0.85rem; color: var(--text-secondary);">
@@ -681,7 +601,7 @@
                     </div>
                     <div style="display: flex; gap: 0.5rem;">
                         <button class="btn-cancel" id="geminiBtnPrevPage" onclick="changeGeminiPage(-1)"
-                            style="padding: 0.3rem 0.8rem;">&larr; Trước</button>
+                            style="padding: 0.3rem 0.8rem;">&larr; Tr╞░ß╗¢c</button>
                         <button class="btn-cancel" id="geminiBtnNextPage" onclick="changeGeminiPage(1)"
                             style="padding: 0.3rem 0.8rem;">Sau &rarr;</button>
                     </div>
@@ -689,14 +609,14 @@
             </div>
 
             <div id="tasksContainer">
-                <div class="empty-state">Đang tải...</div>
+                <div class="empty-state">─Éang tß║úi...</div>
             </div>
         </div>
         <!-- Results Table -->
         <div class="panel-card mt-4">
-            <h2>📊 Lịch sử Kết Quả (Task Results)</h2>
+            <h2>≡ƒôè Lß╗ïch sß╗¡ Kß║┐t Quß║ú (Task Results)</h2>
             <div id="resultsContainer">
-                <div class="empty-state">Đang tải lịch sử kết quả...</div>
+                <div class="empty-state">─Éang tß║úi lß╗ïch sß╗¡ kß║┐t quß║ú...</div>
             </div>
             <div id="paginationControls"
                 style="display: none; justify-content: flex-end; align-items: center; margin-top: 1rem; gap: 1rem;">
@@ -706,142 +626,84 @@
                 </div>
                 <div style="display: flex; gap: 0.5rem;">
                     <button class="btn-cancel" id="btnPrevPage" onclick="changePage(-1)"
-                        style="padding: 0.3rem 0.8rem;">&larr; Trước</button>
+                        style="padding: 0.3rem 0.8rem;">&larr; Tr╞░ß╗¢c</button>
                     <button class="btn-cancel" id="btnNextPage" onclick="changePage(1)"
                         style="padding: 0.3rem 0.8rem;">Sau &rarr;</button>
                 </div>
             </div>
-        </div> <!-- End Results Panel Card -->
-        </div> <!-- End Dashboard View -->
+        </div>
+    </div>
 
-        <!-- ═══════ BUILDER VIEW ═══════ -->
-        <div id="builderView" style="display: none;">
-            <div class="panel-card">
-                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
-                    <h2>🛠️ Tạo Kịch Bản Mới (Custom Task)</h2>
-                    <button class="btn-primary" onclick="saveCustomTask()" style="background: var(--accent-blue); color: #fff; border: none; padding: 0.5rem 1rem; border-radius: 6px; cursor: pointer;">💾 Lưu Kịch Bản</button>
-                </div>
-
-                <div style="margin-bottom: 1rem;">
-                    <label style="display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: var(--text-secondary);">Task ID (duy nhất, không dấu, viết liền)</label>
-                    <input type="text" id="builderTaskId" class="step-input" placeholder="Ví dụ: auto_login_fb">
-                </div>
-
-                <div style="margin-bottom: 1.5rem;">
-                    <label style="display: block; margin-bottom: 0.3rem; font-size: 0.85rem; color: var(--text-secondary);">Tên Kịch Bản</label>
-                    <input type="text" id="builderTaskName" class="step-input" placeholder="Ví dụ: Đăng nhập Facebook tự động">
-                </div>
-
-                <h3 style="font-size: 1rem; margin-bottom: 1rem;">Các Bước (Steps)</h3>
-                <div id="builderStepsContainer"></div>
-
-                <div style="margin-top: 1rem;">
-                    <select id="builderActionSelect" class="step-input" style="width: auto; display: inline-block;">
-                        <option value="goto">🌍 Chuyển trang (goto)</option>
-                        <option value="wait_for_selector">⏳ Đợi Selector (wait_for_selector)</option>
-                        <option value="type_text">⌨️ Nhập Text (type_text)</option>
-                        <option value="press_enter">↵ Nhấn Enter (press_enter)</option>
-                        <option value="click">🖱️ Click (click)</option>
-                        <option value="random_delay">💤 Dừng ngẫu nhiên (random_delay)</option>
-                        <option value="scroll">📜 Cuộn (scroll)</option>
-                        <option value="save_to_results">💾 Lưu kết quả (save_to_results)</option>
-                        <option value="evaluate_script">💻 Chạy JS (evaluate_script)</option>
-                        <option value="take_screenshot">📸 Chụp màn hình (take_screenshot)</option>
-                        <option value="assert_text">✔️ Khẳng định Text (assert_text)</option>
-                        <option value="log_message">📝 Ghi Log (log_message)</option>
-                        <option value="hover">🖲️ Hover chuột (hover)</option>
-                        <option value="keyboard_shortcut">⌨️ Phím tắt (keyboard_shortcut)</option>
-                        <option value="simulate_human_mouse">🐁 Di chuột (simulate_human_mouse)</option>
-                        <option value="upload_file">📤 Upload File (upload_file)</option>
-                        <option value="if_exists_then">🔀 Rẽ nhánh (if_exists_then)</option>
-                        <option value="loop_elements">🔁 Lặp phần tử (loop_elements)</option>
-                        <option value="get_gemini_auth">🔐 Lấy Auth Gemini (get_gemini_auth)</option>
-                    </select>
-                    <button class="btn-cancel" onclick="addBuilderStep()">➕ Thêm Bước</button>
-                </div>
-            </div>
-            
-            <div class="panel-card mt-4">
-                <h2>📁 Danh sách Kịch bản Tùy Chỉnh (Custom)</h2>
-                <div id="customTasksContainer">
-                    <div class="empty-state">Đang tải...</div>
-                </div>
-            </div>
-        </div> <!-- End Builder View -->
-
-    </div> <!-- End Main Content -->
-</div> <!-- End App Container -->
-
-    <!-- ═══════ ASSIGN MODAL ═══════ -->
+    <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ ASSIGN MODAL ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
     <div class="modal-overlay" id="assignModal">
         <div class="modal-box">
-            <h3>🚀 Giao việc (Assign Task)</h3>
+            <h3>≡ƒÜÇ Giao viß╗çc (Assign Task)</h3>
             <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem;">
-                Task: <strong id="modalTaskName">—</strong>
+                Task: <strong id="modalTaskName">ΓÇö</strong>
             </p>
             <label style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.3rem; display: block;">
-                Chọn Worker (chỉ hiện IDLE):
+                Chß╗ìn Worker (chß╗ë hiß╗çn IDLE):
             </label>
             <div style="margin-bottom: 5px;">
                 <label style="cursor: pointer; font-size: 0.85rem;"><input type="checkbox" id="selectAllWorkers"
-                        onclick="toggleAllWorkers()"> Chọn tất cả (Select All)</label>
+                        onclick="toggleAllWorkers()"> Chß╗ìn tß║Ñt cß║ú (Select All)</label>
             </div>
             <div id="modalWorkerList" class="worker-list"
                 style="max-height: 150px; overflow-y: auto; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; margin-bottom: 1rem;">
             </div>
             <div class="modal-actions">
-                <button class="btn-cancel" onclick="closeAssignModal()">Hủy</button>
-                <button class="btn-confirm" onclick="confirmAssign()">Giao việc ✓</button>
+                <button class="btn-cancel" onclick="closeAssignModal()">Hß╗ºy</button>
+                <button class="btn-confirm" onclick="confirmAssign()">Giao viß╗çc Γ£ô</button>
             </div>
         </div>
     </div>
 
-    <!-- ═══════ GEMINI ASSIGN MODAL ═══════ -->
+    <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ GEMINI ASSIGN MODAL ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
     <div class="modal-overlay" id="geminiAssignModal">
         <div class="modal-box">
-            <h3>🎨 Chọn Worker để Tạo Ảnh</h3>
+            <h3>≡ƒÄ¿ Chß╗ìn Worker ─æß╗â Tß║ío ß║ónh</h3>
             <p style="color: var(--text-secondary); font-size: 0.85rem; margin-bottom: 0.75rem; word-break: break-word;">
-                Prompt: <strong id="modalGeminiPromptText">—</strong>
+                Prompt: <strong id="modalGeminiPromptText">ΓÇö</strong>
             </p>
             <label style="font-size: 0.8rem; color: var(--text-secondary); margin-bottom: 0.3rem; display: block;">
-                Chọn Worker (chỉ hiện IDLE):
+                Chß╗ìn Worker (chß╗ë hiß╗çn IDLE):
             </label>
             <div style="margin-bottom: 5px;">
                 <label style="cursor: pointer; font-size: 0.85rem;"><input type="checkbox" id="geminiSelectAllWorkers"
-                        onclick="toggleAllGeminiWorkers()"> Chọn tất cả (Select All)</label>
+                        onclick="toggleAllGeminiWorkers()"> Chß╗ìn tß║Ñt cß║ú (Select All)</label>
             </div>
             <div id="geminiWorkerList" class="worker-list"
                 style="max-height: 150px; overflow-y: auto; background: var(--bg-dark); border: 1px solid var(--border-color); border-radius: 6px; padding: 0.5rem; margin-bottom: 1rem;">
             </div>
             <div class="modal-actions">
-                <button class="btn-cancel" onclick="closeGeminiAssignModal()">Hủy</button>
-                <button class="btn-confirm" onclick="genImg()">Bắt đầu Tạo Ảnh ✨</button>
+                <button class="btn-cancel" onclick="closeGeminiAssignModal()">Hß╗ºy</button>
+                <button class="btn-confirm" onclick="genImg()">Bß║»t ─æß║ºu Tß║ío ß║ónh Γ£¿</button>
             </div>
         </div>
     </div>
 
-    <!-- ═══════ RESULT MODAL ═══════ -->
+    <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ RESULT MODAL ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
     <div class="modal-overlay" id="resultModal">
         <div class="modal-box" style="max-width: 600px; width: 95%;">
-            <h3>📄 Chi tiết Kết quả</h3>
+            <h3>≡ƒôä Chi tiß║┐t Kß║┐t quß║ú</h3>
             <div id="modalResultContent" class="json-viewer" style="margin-bottom: 1rem;"></div>
             <div class="modal-actions">
-                <button class="btn-cancel" onclick="closeResultModal()">Đóng</button>
+                <button class="btn-cancel" onclick="closeResultModal()">─É├│ng</button>
             </div>
         </div>
     </div>
 
-    <!-- ═══════ TOAST ═══════ -->
+    <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ TOAST ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
     <div class="toast-container" id="toastContainer"></div>
 
-    <!-- ═══════ JAVASCRIPT ═══════ -->
+    <!-- ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ JAVASCRIPT ΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉΓòÉ -->
     <script>
         const API_BASE = '';  // same origin
         let currentWorkers = [];
         let currentTasks = [];
         let selectedTaskId = null;
 
-        // ── Toast Notifications ──
+        // ΓöÇΓöÇ Toast Notifications ΓöÇΓöÇ
         function showToast(message, type = 'success') {
             const container = document.getElementById('toastContainer');
             const el = document.createElement('div');
@@ -851,13 +713,13 @@
             setTimeout(() => el.remove(), 4000);
         }
 
-        // ── Helpers ──
+        // ΓöÇΓöÇ Helpers ΓöÇΓöÇ
         function escapeHtml(unsafe) {
             if (!unsafe) return "";
             return unsafe.toString().replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;").replace(/'/g, "&#039;");
         }
 
-        // ── Fetch Workers ──
+        // ΓöÇΓöÇ Fetch Workers ΓöÇΓöÇ
         async function fetchWorkers() {
             try {
                 const res = await fetch(`${API_BASE}/workers`);
@@ -870,7 +732,7 @@
             }
         }
 
-        // ── Fetch Tasks ──
+        // ΓöÇΓöÇ Fetch Tasks ΓöÇΓöÇ
         async function fetchTasks() {
             try {
                 const res = await fetch(`${API_BASE}/tasks`);
@@ -881,7 +743,7 @@
             }
         }
 
-        // ── Fetch Results ──
+        // ΓöÇΓöÇ Fetch Results ΓöÇΓöÇ
         let currentPage = 1;
         const limitPerPage = 15;
         let totalPages = 1;
@@ -921,15 +783,15 @@
             document.getElementById('btnNextPage').style.cursor = (currentPage === totalPages) ? 'not-allowed' : 'pointer';
         }
 
-        // ── Render Workers Table ──
+        // ΓöÇΓöÇ Render Workers Table ΓöÇΓöÇ
         function renderWorkers() {
             const container = document.getElementById('workersContainer');
 
             if (currentWorkers.length === 0) {
                 container.innerHTML = `
                 <div class="empty-state">
-                    <div class="emoji">📡</div>
-                    <p>Chưa có Worker nào kết nối.<br>Hãy cài Extension và mở Chrome.</p>
+                    <div class="emoji">≡ƒôí</div>
+                    <p>Ch╞░a c├│ Worker n├áo kß║┐t nß╗æi.<br>H├úy c├ái Extension v├á mß╗ƒ Chrome.</p>
                 </div>`;
                 return;
             }
@@ -939,11 +801,11 @@
                 <thead>
                     <tr>
                         <th>Worker ID</th>
-                        <th>Trạng thái</th>
-                        <th>Task đang chạy</th>
-                        <th>Lần ping cuối</th>
-                        <th>Kết nối lúc</th>
-                        <th>Hành động</th>
+                        <th>Trß║íng th├íi</th>
+                        <th>Task ─æang chß║íy</th>
+                        <th>Lß║ºn ping cuß╗æi</th>
+                        <th>Kß║┐t nß╗æi l├║c</th>
+                        <th>H├ánh ─æß╗Öng</th>
                     </tr>
                 </thead>
                 <tbody>`;
@@ -951,14 +813,14 @@
             for (const w of currentWorkers) {
                 html += `
                 <tr>
-                    <td><span class="worker-id-text">${w.worker_id.substring(0, 8)}…</span></td>
+                    <td><span class="worker-id-text">${w.worker_id.substring(0, 8)}ΓÇª</span></td>
                     <td><span class="badge-state badge-${w.state}">${w.state}</span></td>
-                    <td>${w.task_running || '—'}</td>
+                    <td>${w.task_running || 'ΓÇö'}</td>
                     <td>${w.last_ping}</td>
                     <td>${w.connected_at}</td>
                     <td>
                         <button class="btn-delete" onclick="deleteWorker('${w.worker_id}')">
-                            ✕ Xóa
+                            Γ£ò X├│a
                         </button>
                     </td>
                 </tr>`;
@@ -968,7 +830,7 @@
             container.innerHTML = html;
         }
 
-        // ── Render Tasks ──
+        // ΓöÇΓöÇ Render Tasks ΓöÇΓöÇ
         let currentTaskTab = 'sample';
 
         function switchTaskTab(tab) {
@@ -988,7 +850,7 @@
             const tasksToShow = currentTasks.filter(t => t.category === currentTaskTab);
 
             if (tasksToShow.length === 0) {
-                container.innerHTML = '<div class="empty-state">Không có task nào trong mục này</div>';
+                container.innerHTML = '<div class="empty-state">Kh├┤ng c├│ task n├áo trong mß╗Ñc n├áy</div>';
                 return;
             }
 
@@ -999,25 +861,26 @@
                 <div class="task-item">
                     <div>
                         <div class="task-name">${t.name}</div>
-                        <div class="task-meta">ID: ${t.task_id} · ${t.steps_count} bước</div>
+                        <div class="task-meta">ID: ${t.task_id} ┬╖ ${t.steps_count} b╞░ß╗¢c</div>
                     </div>
                     <button class="btn-assign"
-                        ${!hasIdleWorker ? 'disabled title="Không có Worker IDLE"' : ''}
+                        ${!hasIdleWorker ? 'disabled title="Kh├┤ng c├│ Worker IDLE"' : ''}
                         onclick="openAssignModal('${t.task_id}', '${t.name.replace(/'/g, "\\'")}')">
-                        📤 Assign
+                        ≡ƒôñ Assign
                     </button>
                 </div>`;
             }
             container.innerHTML = html;
         }
-        // ── Render Results ──
+
+        // ΓöÇΓöÇ Render Results ΓöÇΓöÇ
         function renderResults(results) {
             const container = document.getElementById('resultsContainer');
             if (results.length === 0) {
                 container.innerHTML = `
                 <div class="empty-state">
-                    <div class="emoji">📭</div>
-                    <p>Chưa có kết quả nào được ghi nhận.</p>
+                    <div class="emoji">≡ƒô¡</div>
+                    <p>Ch╞░a c├│ kß║┐t quß║ú n├áo ─æ╞░ß╗úc ghi nhß║¡n.</p>
                 </div>`;
                 return;
             }
@@ -1027,24 +890,24 @@
                 <thead>
                     <tr>
                         <th>ID</th>
-                        <th>Thời gian</th>
+                        <th>Thß╗¥i gian</th>
                         <th>Task / Worker</th>
-                        <th>Trạng thái</th>
-                        <th>Chi tiết</th>
-                        <th>Hành động</th>
+                        <th>Trß║íng th├íi</th>
+                        <th>Chi tiß║┐t</th>
+                        <th>H├ánh ─æß╗Öng</th>
                     </tr>
                 </thead>
                 <tbody>`;
 
             for (const r of results) {
                 const statusColor = r.status === 'completed' ? 'var(--accent-green)' : 'var(--accent-red)';
-                const statusIcon = r.status === 'completed' ? '✅' : '❌';
+                const statusIcon = r.status === 'completed' ? 'Γ£à' : 'Γ¥î';
                 const shortData = r.result_data ? (r.result_data.length > 80 ? r.result_data.substring(0, 80) + '...' : r.result_data) : null;
                 const safeData = escapeHtml(r.result_data);
 
                 const details = r.status === 'completed' ?
-                    (shortData ? `<span style="font-family: monospace; font-size: 0.8rem; color: #a5b4fc; cursor: pointer; text-decoration: underline;" onclick="openResultModal(this.getAttribute('data-result'))" data-result="${safeData}" title="Nhấn để xem chi tiết">${escapeHtml(shortData)}</span>` : 'Không có chi tiết') :
-                    `<span style="color:var(--accent-red)">${escapeHtml(r.error_message) || 'Lỗi không xác định'}</span>`;
+                    (shortData ? `<span style="font-family: monospace; font-size: 0.8rem; color: #a5b4fc; cursor: pointer; text-decoration: underline;" onclick="openResultModal(this.getAttribute('data-result'))" data-result="${safeData}" title="Nhß║Ñn ─æß╗â xem chi tiß║┐t">${escapeHtml(shortData)}</span>` : 'Kh├┤ng c├│ chi tiß║┐t') :
+                    `<span style="color:var(--accent-red)">${escapeHtml(r.error_message) || 'Lß╗ùi kh├┤ng x├íc ─æß╗ïnh'}</span>`;
 
                 html += `
                 <tr>
@@ -1052,7 +915,7 @@
                     <td>${r.created_at}</td>
                     <td>
                         <div><strong>${r.task_id}</strong></div>
-                        <div class="worker-id-text">${r.worker_id.substring(0, 8)}…</div>
+                        <div class="worker-id-text">${r.worker_id.substring(0, 8)}ΓÇª</div>
                     </td>
                     <td>
                         <span style="color:${statusColor}; font-weight:600;">
@@ -1064,14 +927,14 @@
                     </td>
                     <td style="white-space: nowrap;">
                         ${r.task_id === 'gemini_gen_image' ?
-                        `<button class="btn-primary" style="padding: 0.2rem 0.6rem; font-size: 0.75rem; margin-right: 4px; background: var(--accent-blue);" onclick="event.stopPropagation(); downloadImage(this.getAttribute('data-result'), ${r.id})" data-result="${safeData}" ${r.status !== 'completed' ? 'disabled' : ''} title="Tải ảnh dạng hình ảnh">
-                            📥 Tải Ảnh
+                        `<button class="btn-primary" style="padding: 0.2rem 0.6rem; font-size: 0.75rem; margin-right: 4px; background: var(--accent-blue);" onclick="event.stopPropagation(); downloadImage(this.getAttribute('data-result'), ${r.id})" data-result="${safeData}" ${r.status !== 'completed' ? 'disabled' : ''} title="Tß║úi ß║únh dß║íng h├¼nh ß║únh">
+                            ≡ƒôÑ Tß║úi ß║ónh
                         </button>` :
-                        `<button class="btn-primary" style="padding: 0.2rem 0.6rem; font-size: 0.75rem; margin-right: 4px;" onclick="event.stopPropagation(); exportCSV(this.getAttribute('data-result'), ${r.id})" data-result="${safeData}" ${r.status !== 'completed' ? 'disabled' : ''} title="Xuất dữ liệu Scrape thành CSV">
-                            📥 CSV
+                        `<button class="btn-primary" style="padding: 0.2rem 0.6rem; font-size: 0.75rem; margin-right: 4px;" onclick="event.stopPropagation(); exportCSV(this.getAttribute('data-result'), ${r.id})" data-result="${safeData}" ${r.status !== 'completed' ? 'disabled' : ''} title="Xuß║Ñt dß╗» liß╗çu Scrape th├ánh CSV">
+                            ≡ƒôÑ CSV
                         </button>`}
-                        <button class="btn-delete" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;" onclick="event.stopPropagation(); deleteResult(${r.id})" title="Xóa kết quả này">
-                            ✕ Xóa
+                        <button class="btn-delete" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;" onclick="event.stopPropagation(); deleteResult(${r.id})" title="X├│a kß║┐t quß║ú n├áy">
+                            Γ£ò X├│a
                         </button>
                     </td>
                 </tr>`;
@@ -1080,24 +943,24 @@
             container.innerHTML = html;
         }
 
-        // ── Delete Result ──
+        // ΓöÇΓöÇ Delete Result ΓöÇΓöÇ
         async function deleteResult(id) {
-            if (!confirm('Bạn có chắc chắn muốn xóa kết quả này?')) return;
+            if (!confirm('Bß║ín c├│ chß║»c chß║»n muß╗æn x├│a kß║┐t quß║ú n├áy?')) return;
             try {
                 const res = await fetch(`${API_BASE}/results/${id}`, { method: 'DELETE' });
                 if (res.ok) {
-                    showToast(`🗑️ Đã xóa kết quả #${id}`, 'success');
+                    showToast(`≡ƒùæ∩╕Å ─É├ú x├│a kß║┐t quß║ú #${id}`, 'success');
                     fetchResults();
                 } else {
                     const data = await res.json();
-                    showToast(`❌ Xóa thất bại: ${data.detail || 'Lỗi không xác định'}`, 'error');
+                    showToast(`Γ¥î X├│a thß║Ñt bß║íi: ${data.detail || 'Lß╗ùi kh├┤ng x├íc ─æß╗ïnh'}`, 'error');
                 }
             } catch (e) {
-                showToast(`❌ Lỗi kết nối khi xóa: ${e.message}`, 'error');
+                showToast(`Γ¥î Lß╗ùi kß║┐t nß╗æi khi x├│a: ${e.message}`, 'error');
             }
         }
 
-        // ── Export CSV ──
+        // ΓöÇΓöÇ Export CSV ΓöÇΓöÇ
         function exportCSV(jsonString, id) {
             if (!jsonString) return;
             try {
@@ -1124,7 +987,7 @@
                 }
 
                 if (!Array.isArray(dataToExport) || dataToExport.length === 0) {
-                    showToast('Không có dữ liệu bảng hợp lệ để xuất CSV', 'warning');
+                    showToast('Kh├┤ng c├│ dß╗» liß╗çu bß║úng hß╗úp lß╗ç ─æß╗â xuß║Ñt CSV', 'warning');
                     return;
                 }
 
@@ -1154,14 +1017,14 @@
                 document.body.removeChild(link);
                 URL.revokeObjectURL(url);
 
-                showToast(`📥 Đã tải xuống CSV #${id}`, 'success');
+                showToast(`≡ƒôÑ ─É├ú tß║úi xuß╗æng CSV #${id}`, 'success');
             } catch (e) {
                 console.error(e);
-                showToast(`❌ Lỗi cấu trúc JSON: ${e.message}`, 'error');
+                showToast(`Γ¥î Lß╗ùi cß║Ñu tr├║c JSON: ${e.message}`, 'error');
             }
         }
 
-        // ── Download Image ──
+        // ΓöÇΓöÇ Download Image ΓöÇΓöÇ
         function downloadImage(jsonString, id) {
             if (!jsonString) return;
             try {
@@ -1184,7 +1047,7 @@
                 }
 
                 if (urls.length === 0) {
-                    showToast('Không tìm thấy ảnh để tải!', 'warning');
+                    showToast('Kh├┤ng t├¼m thß║Ñy ß║únh ─æß╗â tß║úi!', 'warning');
                     return;
                 }
 
@@ -1199,14 +1062,14 @@
                     link.click();
                     document.body.removeChild(link);
                 });
-                showToast('📥 Đã tải ' + urls.length + ' ảnh', 'success');
+                showToast('≡ƒôÑ ─É├ú tß║úi ' + urls.length + ' ß║únh', 'success');
             } catch (e) {
                 console.error(e);
-                showToast('❌ Lỗi phân tích dữ liệu ảnh: ' + e.message, 'error');
+                showToast('Γ¥î Lß╗ùi ph├ón t├¡ch dß╗» liß╗çu ß║únh: ' + e.message, 'error');
             }
         }
 
-        // ── Update Stats ──
+        // ΓöÇΓöÇ Update Stats ΓöÇΓöÇ
         function updateStats() {
             const total = currentWorkers.length;
             const idle = currentWorkers.filter(w => w.state === 'IDLE').length;
@@ -1222,7 +1085,7 @@
             document.getElementById('serverDot').style.background = '';
         }
 
-        // ── Assign Modal ──
+        // ΓöÇΓöÇ Assign Modal ΓöÇΓöÇ
         function openAssignModal(taskId, taskName) {
             selectedTaskId = taskId;
             document.getElementById('modalTaskName').textContent = taskName;
@@ -1233,12 +1096,12 @@
 
             const idleWorkers = currentWorkers.filter(w => w.state === 'IDLE');
             if (idleWorkers.length === 0) {
-                list.innerHTML = '<div style="color: var(--text-secondary); font-size: 0.85rem;">Không có Worker nào đang IDLE</div>';
+                list.innerHTML = '<div style="color: var(--text-secondary); font-size: 0.85rem;">Kh├┤ng c├│ Worker n├áo ─æang IDLE</div>';
             } else {
                 for (const w of idleWorkers) {
                     const label = document.createElement('label');
                     label.style.cssText = 'display: block; margin-bottom: 0.3rem; cursor: pointer; font-size: 0.85rem;';
-                    label.innerHTML = `<input type="checkbox" class="worker-checkbox" value="${w.worker_id}"> ${w.worker_id.substring(0, 8)}… (IDLE)`;
+                    label.innerHTML = `<input type="checkbox" class="worker-checkbox" value="${w.worker_id}"> ${w.worker_id.substring(0, 8)}ΓÇª (IDLE)`;
                     list.appendChild(label);
                 }
             }
@@ -1262,7 +1125,7 @@
             const workerIds = Array.from(checkboxes).map(cb => cb.value);
 
             if (workerIds.length === 0) {
-                showToast('Vui lòng chọn ít nhất 1 Worker!', 'error');
+                showToast('Vui l├▓ng chß╗ìn ├¡t nhß║Ñt 1 Worker!', 'error');
                 return;
             }
 
@@ -1276,58 +1139,58 @@
                 const data = await res.json();
                 if (res.ok) {
                     const num = data.assigned_to ? data.assigned_to.length : 0;
-                    showToast(`✅ Đã giao task "${selectedTaskId}" cho ${num} Worker`, 'success');
+                    showToast(`Γ£à ─É├ú giao task "${selectedTaskId}" cho ${num} Worker`, 'success');
                     if (data.errors && data.errors.length > 0) {
-                        showToast(`⚠️ Có ${data.errors.length} lỗi khi giao việc`, 'error');
+                        showToast(`ΓÜá∩╕Å C├│ ${data.errors.length} lß╗ùi khi giao viß╗çc`, 'error');
                     }
                     closeAssignModal();
                     fetchWorkers();
                     loadGallery(); // refresh
                 } else {
-                    showToast(`❌ ${data.detail || 'Lỗi không xác định'}`, 'error');
+                    showToast(`Γ¥î ${data.detail || 'Lß╗ùi kh├┤ng x├íc ─æß╗ïnh'}`, 'error');
                 }
             } catch (e) {
-                showToast(`❌ Lỗi kết nối: ${e.message}`, 'error');
+                showToast(`Γ¥î Lß╗ùi kß║┐t nß╗æi: ${e.message}`, 'error');
             }
         }
 
-        // ── Delete Worker ──
+        // ΓöÇΓöÇ Delete Worker ΓöÇΓöÇ
         async function deleteWorker(workerId) {
-            if (!confirm(`Xóa Worker [${workerId.substring(0, 8)}…] khỏi danh sách?`)) return;
+            if (!confirm(`X├│a Worker [${workerId.substring(0, 8)}ΓÇª] khß╗Åi danh s├ích?`)) return;
 
             try {
                 const res = await fetch(`${API_BASE}/workers/${workerId}`, { method: 'DELETE' });
                 const data = await res.json();
                 if (res.ok) {
-                    showToast(`🗑️ Đã xóa Worker [${workerId.substring(0, 8)}…]`, 'success');
+                    showToast(`≡ƒùæ∩╕Å ─É├ú x├│a Worker [${workerId.substring(0, 8)}ΓÇª]`, 'success');
                     fetchWorkers();
                     loadGallery();
                 } else {
-                    showToast(`❌ ${data.detail}`, 'error');
+                    showToast(`Γ¥î ${data.detail}`, 'error');
                 }
             } catch (e) {
-                showToast(`❌ Lỗi: ${e.message}`, 'error');
+                showToast(`Γ¥î Lß╗ùi: ${e.message}`, 'error');
             }
         }
 
-        // ── Click outside modal to close ──
+        // ΓöÇΓöÇ Click outside modal to close ΓöÇΓöÇ
         document.getElementById('assignModal').addEventListener('click', function (e) {
             if (e.target === this) closeAssignModal();
         });
 
-        // ── Result Modal ──
+        // ΓöÇΓöÇ Result Modal ΓöÇΓöÇ
         function openResultModal(dataString) {
             let content = dataString;
             try {
                 const parsed = JSON.parse(dataString);
 
-                // Xử lý làm mịn giao diện hiển thị cho evaluate_script (ví dụ mảng YouTube)
+                // Xß╗¡ l├╜ l├ám mß╗ïn giao diß╗çn hiß╗ân thß╗ï cho evaluate_script (v├¡ dß╗Ñ mß║úng YouTube)
                 let displayObj = parsed;
                 if (Array.isArray(parsed) && parsed.length > 0 && parsed[0].data) {
                     try {
                         displayObj = parsed.map(p => ({
                             ...p,
-                            data: JSON.parse(p.data) // Thử parse chuỗi json bên trong 'data'
+                            data: JSON.parse(p.data) // Thß╗¡ parse chuß╗ùi json b├¬n trong 'data'
                         }));
                     } catch (e) { }
                 }
@@ -1348,11 +1211,11 @@
         });
 
 
-        // ── Gemini Image Gen ─────────────────────────────────────
+        // ΓöÇΓöÇ Gemini Image Gen ΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇΓöÇ
         function openGeminiAssignModal() {
             const prompt = document.getElementById('geminiPrompt').value.trim();
             if (!prompt) {
-                showToast('❌ Vui lòng nhập prompt trước khi giao việc!', 'error');
+                showToast('Γ¥î Vui l├▓ng nhß║¡p prompt tr╞░ß╗¢c khi giao viß╗çc!', 'error');
                 document.getElementById('geminiPrompt').focus();
                 return;
             }
@@ -1383,7 +1246,7 @@
             
             const idleWorkers = (currentWorkers || []).filter(w => w.state === 'IDLE');
             if (idleWorkers.length === 0) {
-                list.innerHTML = '<div style="color: var(--text-secondary); font-size: 0.85rem;">Không có Worker nào đang IDLE</div>';
+                list.innerHTML = '<div style="color: var(--text-secondary); font-size: 0.85rem;">Kh├┤ng c├│ Worker n├áo ─æang IDLE</div>';
                 const sa = document.getElementById('geminiSelectAllWorkers');
                 if (sa) sa.checked = false;
             } else {
@@ -1391,7 +1254,7 @@
                     const label = document.createElement('label');
                     label.style.cssText = 'display: block; margin-bottom: 0.3rem; cursor: pointer; font-size: 0.85rem;';
                     const isChecked = checkedBoxes.includes(w.worker_id) ? 'checked' : '';
-                    label.innerHTML = `<input type="checkbox" class="gemini-worker-checkbox" value="${w.worker_id}" ${isChecked}> ${w.worker_id.substring(0, 8)}… (IDLE)`;
+                    label.innerHTML = `<input type="checkbox" class="gemini-worker-checkbox" value="${w.worker_id}" ${isChecked}> ${w.worker_id.substring(0, 8)}ΓÇª (IDLE)`;
                     list.appendChild(label);
                 }
             }
@@ -1408,8 +1271,8 @@
             const checkboxes = document.querySelectorAll('.gemini-worker-checkbox:checked');
             const workerIds = Array.from(checkboxes).map(cb => cb.value);
 
-            if (!prompt) return showToast('❌ Nhập prompt trước!', 'error');
-            if (workerIds.length === 0) return showToast('❌ Chọn ít nhất 1 worker IDLE!', 'error');
+            if (!prompt) return showToast('Γ¥î Nhß║¡p prompt tr╞░ß╗¢c!', 'error');
+            if (workerIds.length === 0) return showToast('Γ¥î Chß╗ìn ├¡t nhß║Ñt 1 worker IDLE!', 'error');
 
             try {
                 const res = await fetch(`${API_BASE}/gen-img`, {
@@ -1420,17 +1283,17 @@
                 const data = await res.json();
                 if (res.ok) {
                     const num = data.assigned_to ? data.assigned_to.length : 0;
-                    showToast(`🎨 Đã dispatch! Đang tạo ảnh trên ${num} worker...`, 'success');
+                    showToast(`≡ƒÄ¿ ─É├ú dispatch! ─Éang tß║ío ß║únh tr├¬n ${num} worker...`, 'success');
                     if (data.errors && data.errors.length > 0) {
-                        showToast(`⚠️ Có ${data.errors.length} lỗi khi giao việc`, 'error');
+                        showToast(`ΓÜá∩╕Å C├│ ${data.errors.length} lß╗ùi khi giao viß╗çc`, 'error');
                     }
                     document.getElementById('geminiPrompt').value = '';
                     closeGeminiAssignModal();
-                    setTimeout(loadGallery, 15000); // tải lại sau 15s
+                    setTimeout(loadGallery, 15000); // tß║úi lß║íi sau 15s
                 } else {
-                    showToast(`❌ ${data.detail || 'Lỗi dispatch'}`, 'error');
+                    showToast(`Γ¥î ${data.detail || 'Lß╗ùi dispatch'}`, 'error');
                 }
-            } catch (e) { showToast(`❌ Lỗi: ${e.message}`, 'error'); }
+            } catch (e) { showToast(`Γ¥î Lß╗ùi: ${e.message}`, 'error'); }
         }
 
         let geminiCurrentPage = 1;
@@ -1504,228 +1367,18 @@
                         <img src="${url}" alt="${item.prompt}" onerror="this.style.display='none'">
                         <div class="gemini-overlay">
                             <div class="gemini-filename" title="${filename}">${filename}</div>
-                            <button class="gemini-download-btn" onclick="triggerDownload('${url}', '${filename}', event)">⬇ Tải xuống</button>
+                            <button class="gemini-download-btn" onclick="triggerDownload('${url}', '${filename}', event)">Γ¼ç Tß║úi xuß╗æng</button>
                         </div>
                     </div>`;
                     }).join('');
                 }
-                return `<div style="border-radius:8px; border:1px solid var(--border-color); background:var(--bg-dark); padding:0.6rem; font-size:0.8rem; color:#e74c3c;">❌ ${item.prompt}<br><span style="color:var(--text-muted)">${item.error_message || 'Lỗi không xác định'}</span></div>`;
+                return `<div style="border-radius:8px; border:1px solid var(--border-color); background:var(--bg-dark); padding:0.6rem; font-size:0.8rem; color:#e74c3c;">Γ¥î ${item.prompt}<br><span style="color:var(--text-muted)">${item.error_message || 'Lß╗ùi kh├┤ng x├íc ─æß╗ïnh'}</span></div>`;
             }).join('');
         }
 
-        // Cập nhật worker list cho Gemini khi fetchWorkers chạy
+        // Cß║¡p nhß║¡t worker list cho Gemini khi fetchWorkers chß║íy
         const _origRenderWorkers = typeof renderWorkers === 'function' ? renderWorkers : null;
-        
-        // ── Navigation ──
-        function switchView(viewName) {
-            document.querySelectorAll('.sidebar-item').forEach(el => el.classList.remove('active'));
-            document.getElementById(`nav-${viewName}`).classList.add('active');
-            
-            document.getElementById('dashboardView').style.display = viewName === 'dashboard' ? 'block' : 'none';
-            document.getElementById('builderView').style.display = viewName === 'builder' ? 'block' : 'none';
-            
-            if(viewName === 'builder') {
-                renderCustomTasksTable();
-            }
-        }
-
-        // ── Builder Logic ──
-        let builderSteps = [];
-        
-        function addBuilderStep() {
-            const action = document.getElementById('builderActionSelect').value;
-            const newStep = { action: action };
-            
-            if(action === 'goto') { newStep.url = 'https://'; }
-            if(action === 'wait_for_selector') { newStep.selector = ''; newStep.timeout = 10000; }
-            if(action === 'type_text') { newStep.selector = ''; newStep.text = ''; newStep.delayMs = 50; }
-            if(action === 'press_enter') { newStep.selector = ''; }
-            if(action === 'click') { newStep.selector = ''; }
-            if(action === 'random_delay') { newStep.min = 1000; newStep.max = 3000; }
-            if(action === 'scroll') { newStep.direction = 'down'; newStep.pixels = 500; }
-            if(action === 'save_to_results') { newStep.key = ''; newStep.script = ''; }
-            if(action === 'evaluate_script') { newStep.script = ''; }
-            if(action === 'take_screenshot') { newStep.full_page = true; }
-            if(action === 'assert_text') { newStep.selector = ''; newStep.expected_text = ''; }
-            if(action === 'log_message') { newStep.message = ''; newStep.level = 'info'; }
-            if(action === 'hover') { newStep.selector = ''; }
-            if(action === 'keyboard_shortcut') { newStep.key = 'Tab'; newStep.ctrl = false; newStep.alt = false; newStep.shift = false; }
-            if(action === 'simulate_human_mouse') { newStep.selector = ''; }
-            if(action === 'upload_file') { newStep.selector = ''; newStep.file_path = ''; }
-            if(action === 'if_exists_then') { newStep.selector = ''; newStep.then_steps = []; newStep.else_steps = []; }
-            if(action === 'loop_elements') { newStep.selector = ''; newStep.max_items = 10; newStep.sub_steps = []; }
-            if(action === 'prompt_gemini') { newStep.prompt = ''; }
-            if(action === 'get_gemini_auth') { newStep.prompt = ''; }
-            
-            builderSteps.push(newStep);
-            renderBuilderSteps();
-        }
-
-        function removeBuilderStep(index) {
-            builderSteps.splice(index, 1);
-            renderBuilderSteps();
-        }
-
-        function moveBuilderStep(index, dir) {
-            if(index + dir < 0 || index + dir >= builderSteps.length) return;
-            const temp = builderSteps[index];
-            builderSteps[index] = builderSteps[index + dir];
-            builderSteps[index + dir] = temp;
-            renderBuilderSteps();
-        }
-
-        function renderBuilderSteps() {
-            const container = document.getElementById('builderStepsContainer');
-            if(builderSteps.length === 0) {
-                container.innerHTML = '<div style="color:var(--text-secondary); font-size:0.85rem;">Chưa có bước nào.</div>';
-                return;
-            }
-            
-            let html = '';
-            builderSteps.forEach((step, idx) => {
-                html += `<div class="builder-step">
-                    <div class="builder-step-header">
-                        <span>Bước ${idx + 1}: <span style="color:var(--accent-blue);">${step.action.toUpperCase()}</span></span>
-                        <div class="builder-step-actions">
-                            <button class="btn-cancel" style="padding:0.2rem 0.5rem; font-size:0.75rem;" onclick="moveBuilderStep(${idx}, -1)">▲</button>
-                            <button class="btn-cancel" style="padding:0.2rem 0.5rem; font-size:0.75rem;" onclick="moveBuilderStep(${idx}, 1)">▼</button>
-                            <button class="btn-delete" style="padding:0.2rem 0.5rem; font-size:0.75rem; border:none; background:transparent; color:var(--accent-red);" onclick="removeBuilderStep(${idx})">✕</button>
-                        </div>
-                    </div>
-                    <div class="builder-step-form">`;
-                
-                Object.keys(step).forEach(key => {
-                    if(key === 'action') return;
-                    
-                    let inputHtml = "";
-                    const val = step[key];
-                    if (typeof val === 'boolean') {
-                        inputHtml = `<select class="step-input" onchange="builderSteps[${idx}]['${key}'] = this.value === 'true'"><option value="true" ${val ? 'selected' : ''}>true</option><option value="false" ${!val ? 'selected' : ''}>false</option></select>`;
-                    } else if (Array.isArray(val) || typeof val === 'object') {
-                        inputHtml = `<textarea class="step-input" onchange="try { builderSteps[${idx}]['${key}'] = JSON.parse(this.value); } catch(e){ alert('JSON không hợp lệ'); }" rows="3" style="font-family:monospace;">${escapeHtml(JSON.stringify(val, null, 2))}</textarea>`;
-                    } else if (key === 'script' || key === 'prompt') {
-                        inputHtml = `<textarea class="step-input" onchange="builderSteps[${idx}]['${key}'] = this.value" rows="3" style="font-family:monospace;">${escapeHtml(val)}</textarea>`;
-                    } else {
-                        inputHtml = `<input type="${typeof val==='number'?'number':'text'}" class="step-input" value="${escapeHtml(val)}" onchange="builderSteps[${idx}]['${key}'] = ${typeof val==='number' ? 'Number(this.value)' : 'this.value'}">`;
-                    }
-
-                    html += `
-                        <label style="font-size:0.8rem; color:var(--text-secondary);">${key}</label>
-                        ${inputHtml}
-                    `;
-                });
-                
-                html += `</div></div>`;
-            });
-            container.innerHTML = html;
-        }
-
-        async function saveCustomTask() {
-            const taskId = document.getElementById('builderTaskId').value.trim();
-            const taskName = document.getElementById('builderTaskName').value.trim();
-            
-            if(!taskId || !taskName) return showToast('Vui lòng nhập Task ID và Tên Kịch Bản', 'error');
-            if(builderSteps.length === 0) return showToast('Kịch bản cần có ít nhất 1 bước', 'error');
-            
-            const payload = {
-                task_id: taskId,
-                name: taskName,
-                steps: builderSteps
-            };
-            
-            try {
-                const res = await fetch(`${API_BASE}/tasks`, {
-                    method: 'POST',
-                    headers: {'Content-Type': 'application/json'},
-                    body: JSON.stringify(payload)
-                });
-                const data = await res.json();
-                if(res.ok) {
-                    showToast('✅ Lưu thành công!', 'success');
-                    fetchTasks();
-                    setTimeout(renderCustomTasksTable, 300);
-                } else {
-                    showToast('❌ Lỗi: ' + data.detail, 'error');
-                }
-            } catch(e) {
-                showToast('❌ Lỗi lưu: ' + e.message, 'error');
-            }
-        }
-        
-        function renderCustomTasksTable() {
-            const container = document.getElementById('customTasksContainer');
-            const customTasks = currentTasks.filter(t => t.category === 'custom');
-            
-            if (customTasks.length === 0) {
-                container.innerHTML = '<div class="empty-state" style="padding:1rem;">Không có kịch bản custom nào</div>';
-                return;
-            }
-
-            let html = `
-            <table class="table-dark-custom">
-                <thead>
-                    <tr>
-                        <th>Task ID</th>
-                        <th>Tên (Name)</th>
-                        <th>Số Bước</th>
-                        <th>Hành động</th>
-                    </tr>
-                </thead>
-                <tbody>`;
-
-            for (const t of customTasks) {
-                html += `
-                <tr>
-                    <td><span class="worker-id-text">${t.task_id}</span></td>
-                    <td>${t.name}</td>
-                    <td>${t.steps_count} steps</td>
-                    <td>
-                        <button class="btn-cancel" style="padding: 0.2rem 0.6rem; font-size: 0.75rem; color: var(--text-primary); margin-right: 4px;" onclick="editCustomTask('${t.task_id}')">
-                            ✏️ Sửa
-                        </button>
-                        <button class="btn-delete" style="padding: 0.2rem 0.6rem; font-size: 0.75rem;" onclick="deleteCustomTask('${t.task_id}')">
-                            ✕ Xóa
-                        </button>
-                    </td>
-                </tr>`;
-            }
-            html += `</tbody></table>`;
-            container.innerHTML = html;
-        }
-
-        async function deleteCustomTask(taskId) {
-            if(!confirm(`Xóa kịch bản ${taskId}?`)) return;
-            try {
-                const res = await fetch(`${API_BASE}/tasks/${taskId}`, { method: 'DELETE' });
-                if(res.ok) {
-                    showToast('🗑️ Đã xóa', 'success');
-                    fetchTasks();
-                    setTimeout(renderCustomTasksTable, 300);
-                }
-            } catch(e) { showToast('❌ Lỗi xoá', 'error'); }
-        }
-
-        async function editCustomTask(taskId) {
-            try {
-                const res = await fetch(`${API_BASE}/tasks/${taskId}`);
-                if (!res.ok) throw new Error("Không thể tải kịch bản");
-                const data = await res.json();
-                
-                document.getElementById('builderTaskId').value = data.task_id;
-                document.getElementById('builderTaskName').value = data.name;
-                builderSteps = data.steps || [];
-                renderBuilderSteps();
-                window.scrollTo({ top: 0, behavior: 'smooth' });
-                showToast(`Đang sửa kịch bản ${taskId}`, 'success');
-            } catch (e) {
-                showToast(`❌ Lỗi: ${e.message}`, 'error');
-            }
-        }
-
-        // Initialize Builder steps
-        renderBuilderSteps();
-
-        // ── Init & Auto-refresh ──
+        // ΓöÇΓöÇ Init & Auto-refresh ΓöÇΓöÇ
         fetchWorkers();
         loadGallery();
         fetchTasks();

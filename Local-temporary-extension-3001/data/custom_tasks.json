@@ -1,0 +1,17 @@
+[
+  {
+    "task_id": "kich_ban_test",
+    "name": "vào google và search",
+    "steps": [
+      {
+        "action": "goto",
+        "url": "https://www.youtube.com"
+      },
+      {
+        "action": "wait_for_selector",
+        "selector": "input[name='search_query']",
+        "timeout": 10000
+      }
+    ]
+  }
+]
