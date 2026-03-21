@@ -1,0 +1,11 @@
+version: '3.8'
+
+services:
+  orchestrator:
+    build: .
+    container_name: python_cdp_server
+    ports:
+      - "3001:3001"
+    environment:
+      - PYTHONUNBUFFERED=1 # Giúp log in ra terminal Docker ngay lập tức
+    restart: unless-stopped

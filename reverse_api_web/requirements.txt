@@ -1,0 +1,10 @@
+# Request Capture Tool Dependencies
+
+# Core - mitmproxy for traffic interception
+mitmproxy>=10.0.0
+
+# Console output - Rich for beautiful terminal UI
+rich>=13.0.0
+
+# Fast JSON serialization (optional, falls back to stdlib)
+orjson>=3.9.0

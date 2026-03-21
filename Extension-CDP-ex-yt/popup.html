@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CDP RPA Worker</title>
+  <style>
+    @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    :root {
+      --bg:        #0d1117;
+      --surface:   #161b22;
+      --border:    #30363d;
+      --text:      #e6edf3;
+      --muted:     #7d8590;
+      --green:     #3fb950;
+      --green-dim: #1a4729;
+      --red:       #f85149;
+      --red-dim:   #4b1113;
+      --blue:      #58a6ff;
+      --yellow:    #d29922;
+      --purple:    #a371f7;
+    }
+
+    body {
+      width: 340px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Inter', system-ui, sans-serif;
+      font-size: 13px;
+    }
+
+    /* ── Header ── */
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 14px 10px;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .brand { display: flex; align-items: center; gap: 8px; }
+    .brand-icon {
+      width: 26px; height: 26px;
+      background: linear-gradient(135deg, #58a6ff 0%, #1f6feb 100%);
+      border-radius: 7px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 14px;
+    }
+    .brand-name  { font-weight: 700; font-size: 13px; }
+    .brand-sub   { font-size: 10px; color: var(--muted); }
+
+    /* ── Toggle ── */
+    .toggle-wrap { display: flex; align-items: center; gap: 7px; }
+    .toggle-label { font-size: 11px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; }
+    .toggle { position: relative; width: 40px; height: 22px; }
+    .toggle input { opacity: 0; width: 0; height: 0; }
+    .slider { position: absolute; inset: 0; background: var(--border); border-radius: 22px; cursor: pointer; transition: background .2s; }
+    .slider::before { content: ''; position: absolute; width: 16px; height: 16px; left: 3px; top: 3px; background: #fff; border-radius: 50%; transition: transform .2s; }
+    input:checked + .slider { background: var(--green); }
+    input:checked + .slider::before { transform: translateX(18px); }
+
+    /* ── Tabs ── */
+    .tab-bar {
+      display: flex;
+      border-bottom: 1px solid var(--border);
+      background: var(--surface);
+    }
+    .tab-btn {
+      flex: 1;
+      padding: 8px 0;
+      font-size: 11px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      background: none;
+      border: none;
+      border-bottom: 2px solid transparent;
+      cursor: pointer;
+      transition: color .15s, border-color .15s;
+    }
+    .tab-btn.active { color: var(--blue); border-bottom-color: var(--blue); }
+    .tab-btn:hover:not(.active) { color: var(--text); }
+
+    /* ── Tab Content ── */
+    .tab-panel { display: none; }
+    .tab-panel.active { display: block; }
+
+    /* ── Content ── */
+    .content { padding: 12px 14px; display: flex; flex-direction: column; gap: 10px; }
+
+    /* ── Card ── */
+    .card { background: var(--surface); border: 1px solid var(--border); border-radius: 9px; padding: 11px 13px; }
+    .card-title { font-size: 10px; font-weight: 600; color: var(--muted); text-transform: uppercase; letter-spacing: 0.5px; margin-bottom: 9px; }
+
+    /* Connection */
+    .conn-row { display: flex; align-items: center; justify-content: space-between; }
+    .conn-left { display: flex; align-items: center; gap: 8px; }
+    .dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; background: var(--muted); }
+    .dot.connected    { background: var(--green);  box-shadow: 0 0 6px var(--green);  animation: pulse 2s infinite; }
+    .dot.connecting   { background: var(--yellow); box-shadow: 0 0 6px var(--yellow); animation: pulse 1s infinite; }
+    .dot.disconnected { background: var(--red); }
+    @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.4; } }
+    .conn-status { font-weight: 600; }
+    .conn-status.connected    { color: var(--green); }
+    .conn-status.connecting   { color: var(--yellow); }
+    .conn-status.disconnected { color: var(--red); }
+    .conn-url { font-size: 10px; color: var(--muted); font-family: monospace; }
+
+    /* Stats */
+    .stats { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 7px; }
+    .stat { background: var(--bg); border: 1px solid var(--border); border-radius: 7px; padding: 8px; text-align: center; }
+    .stat-value { font-size: 19px; font-weight: 700; line-height: 1; margin-bottom: 2px; }
+    .stat-label { font-size: 10px; color: var(--muted); font-weight: 500; }
+    .stat-value.ok    { color: var(--green); }
+    .stat-value.fail  { color: var(--red); }
+    .stat-value.queue { color: var(--blue); }
+
+    /* Log box */
+    .log-box {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      padding: 7px 9px;
+      max-height: 130px;
+      overflow-y: auto;
+      font-family: 'Courier New', monospace;
+      font-size: 11px;
+      line-height: 1.5;
+      color: var(--muted);
+    }
+    .log-box::-webkit-scrollbar { width: 3px; }
+    .log-box::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .log-line { white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .log-line.info    { color: var(--blue); }
+    .log-line.success { color: var(--green); }
+    .log-line.error   { color: var(--red); }
+    .log-line.warn    { color: var(--yellow); }
+
+    /* ── Debug Tab ── */
+
+    /* Screenshot gallery */
+    .screenshot-gallery {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      max-height: 260px;
+      overflow-y: auto;
+    }
+    .screenshot-gallery::-webkit-scrollbar { width: 3px; }
+    .screenshot-gallery::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .shot-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 7px;
+      overflow: hidden;
+    }
+    .shot-title {
+      padding: 4px 8px;
+      font-family: monospace;
+      font-size: 10px;
+      color: var(--muted);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .shot-title a {
+      color: var(--blue);
+      font-size: 10px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .shot-title a:hover { text-decoration: underline; }
+    .shot-img {
+      width: 100%;
+      display: block;
+      max-height: 140px;
+      object-fit: cover;
+      cursor: zoom-in;
+    }
+    .shot-img:hover { opacity: 0.9; }
+    .no-data { font-size: 11px; color: var(--muted); text-align: center; padding: 12px 0; }
+
+    /* Debug log list */
+    .debug-log-list {
+      max-height: 180px;
+      overflow-y: auto;
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+    }
+    .debug-log-list::-webkit-scrollbar { width: 3px; }
+    .debug-log-list::-webkit-scrollbar-thumb { background: var(--border); border-radius: 3px; }
+    .dlog-item {
+      background: var(--bg);
+      border: 1px solid var(--border);
+      border-radius: 5px;
+      padding: 5px 8px;
+      font-family: monospace;
+      font-size: 11px;
+      line-height: 1.4;
+    }
+    .dlog-item.warn  { border-left: 3px solid var(--yellow); }
+    .dlog-item.error { border-left: 3px solid var(--red); }
+    .dlog-item.info  { border-left: 3px solid var(--blue); }
+    .dlog-time { font-size: 9px; color: var(--muted); margin-bottom: 1px; }
+    .dlog-msg  { color: var(--text); word-break: break-word; white-space: pre-wrap; }
+
+    /* ── Footer ── */
+    .footer {
+      padding: 8px 14px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .footer-text { font-size: 10px; color: var(--muted); }
+    .btn-row { display: flex; gap: 6px; }
+    .btn-clear {
+      font-size: 10px; font-weight: 600;
+      color: var(--muted); background: none;
+      border: 1px solid var(--border); border-radius: 5px;
+      padding: 3px 9px; cursor: pointer;
+      transition: color .15s, border-color .15s;
+    }
+    .btn-clear:hover { color: var(--text); border-color: var(--muted); }
+    .btn-clear.danger:hover { color: var(--red); border-color: var(--red); }
+
+    /* Lightbox */
+    #lightbox {
+      display: none;
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,.85);
+      z-index: 9999;
+      align-items: center; justify-content: center;
+      cursor: zoom-out;
+    }
+    #lightbox.open { display: flex; }
+    #lightbox img { max-width: 100%; max-height: 100%; border-radius: 4px; }
+  </style>
+</head>
+<body>
+
+  <!-- Header -->
+  <div class="header">
+    <div class="brand">
+      <div class="brand-icon">⚡</div>
+      <div>
+        <div class="brand-name">CDP RPA Worker</div>
+        <div class="brand-sub">Distributed Scraping Agent</div>
+      </div>
+    </div>
+    <div class="toggle-wrap">
+      <span class="toggle-label" id="toggle-label">ON</span>
+      <label class="toggle">
+        <input type="checkbox" id="main-toggle" checked />
+        <span class="slider"></span>
+      </label>
+    </div>
+  </div>
+
+  <!-- Tab bar -->
+  <div class="tab-bar">
+    <button class="tab-btn active" data-tab="status">📊 Status</button>
+    <button class="tab-btn"        data-tab="debug">🐛 Debug</button>
+  </div>
+
+  <!-- ═══ TAB: STATUS ═══ -->
+  <div class="tab-panel active" id="tab-status">
+    <div class="content">
+
+      <!-- Connection -->
+      <div class="card">
+        <div class="card-title">WebSocket Connection</div>
+        <div class="conn-row">
+          <div class="conn-left">
+            <div class="dot" id="dot"></div>
+            <div>
+              <div class="conn-status" id="conn-status">Connecting…</div>
+              <div class="conn-url"    id="conn-url">ws://localhost:3001</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Stats -->
+      <div class="card">
+        <div class="card-title">Session Stats</div>
+        <div class="stats">
+          <div class="stat"><div class="stat-value ok"    id="stat-done">0</div><div class="stat-label">Done</div></div>
+          <div class="stat"><div class="stat-value fail"  id="stat-fail">0</div><div class="stat-label">Failed</div></div>
+          <div class="stat"><div class="stat-value queue" id="stat-running">—</div><div class="stat-label">Running</div></div>
+        </div>
+      </div>
+
+      <!-- Activity Log -->
+      <div class="card">
+        <div class="card-title">Activity Log</div>
+        <div class="log-box" id="log-box">
+          <div class="log-line info">Waiting for background…</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ═══ TAB: DEBUG ═══ -->
+  <div class="tab-panel" id="tab-debug">
+    <div class="content">
+
+      <!-- Screenshots -->
+      <div class="card">
+        <div class="card-title">📷 Screenshots (<span id="shot-count">0</span>)</div>
+        <div class="screenshot-gallery" id="shot-gallery">
+          <div class="no-data">No screenshots yet</div>
+        </div>
+      </div>
+
+      <!-- Debug messages (log_message action) -->
+      <div class="card">
+        <div class="card-title">📋 Debug Messages (<span id="dlog-count">0</span>)</div>
+        <div class="debug-log-list" id="dlog-list">
+          <div class="no-data">No debug messages yet</div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <div class="footer">
+    <span class="footer-text" id="uptime-text">v1.1.0</span>
+    <div class="btn-row">
+      <button class="btn-clear danger" id="btn-clear-shots">Clear Shots</button>
+      <button class="btn-clear" id="btn-clear">Clear Log</button>
+    </div>
+  </div>
+
+  <!-- Lightbox for screenshot zoom -->
+  <div id="lightbox"><img id="lightbox-img" src="" alt="screenshot" /></div>
+
+  <script src="popup.js"></script>
+</body>
+</html>

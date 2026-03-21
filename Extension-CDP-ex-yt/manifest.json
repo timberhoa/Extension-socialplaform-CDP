@@ -1,0 +1,24 @@
+{
+  "manifest_version": 3,
+  "name": "CDP RPA Worker",
+  "version": "1.0.0",
+  "description": "Distributed Web Scraping Worker using Chrome DevTools Protocol",
+  "permissions": [
+    "debugger",
+    "tabs",
+    "storage",
+    "cookies",
+    "scripting"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "background": {
+    "service_worker": "background.js",
+    "type": "module"
+  },
+  "action": {
+    "default_title": "CDP RPA Worker",
+    "default_popup": "popup.html"
+  }
+}
