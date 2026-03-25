@@ -4,6 +4,9 @@ Cung cấp các API HTTP (GET, POST, DELETE) cho Front-end Control Panel xử l�
 """
 
 import json
+import asyncio
+import httpx
+from typing import Optional
 
 from fastapi import APIRouter, HTTPException
 from fastapi.responses import FileResponse
@@ -227,6 +230,7 @@ async def delete_worker(worker_id: str):
     print(f"🗑️  Đã xóa Worker [{worker_id[:8]}]")
     return {"status": "deleted", "worker_id": worker_id}
 
+
 @router.get("/api/settings/gemini")
 async def get_settings_gemini():
     return load_gemini_config()
@@ -237,3 +241,249 @@ async def update_settings_gemini(settings: dict):
     if success:
         return {"status": "success", "message": "Đã lưu cấu hình Gemini"}
     raise HTTPException(status_code=500, detail="Không thể lưu cấu hình")
+
+
+# ─────────────────────────────────────────
+#  GPM Login Integration
+# ─────────────────────────────────────────
+
+GPM_BASE = "http://127.0.0.1:19995"
+GPM_TIMEOUT = 30  # seconds per request
+
+
+class GpmProfileRequest(BaseModel):
+    profile_ids: list[str]
+
+
+@router.get("/api/gpm/profiles")
+async def gpm_list_profiles(group_id: Optional[int] = None, page: int = 1, per_page: int = 100):
+    """Lấy danh sách profiles từ GPM Login và kiểm tra trạng thái đang chạy."""
+    try:
+        async with httpx.AsyncClient(timeout=GPM_TIMEOUT) as client:
+            params = {"page": page, "per_page": per_page}
+            if group_id is not None:
+                params["group_id"] = group_id
+            
+            res = await client.get(
+                f"{GPM_BASE}/api/v3/profiles",
+                params=params
+            )
+            res.raise_for_status()
+            data = res.json()
+            
+            # Extract profile list based on GPM API response format
+            profiles = data.get("data", []) if isinstance(data, dict) else data
+            
+            # Cross-reference with active WORKERS to determine if it's currently running
+            from .state import WORKERS
+            
+            # Helper to check if a profile is running based on connected workers
+            def is_profile_running(p):
+                # If worker explicitly provides a profile_id
+                for wid, wdata in WORKERS.items():
+                    if wdata.get("profile_id") == p["id"]:
+                        return True
+                    # GPM profiles often have the extension attached natively with worker_id = profile name
+                    if wid == p["name"] or wid.startswith(p["name"] + "_"):
+                        return True
+                    if wid == p["id"] or wid.startswith(p["id"] + "_"):
+                        return True
+                return False
+                
+            for p in profiles:
+                p["is_running"] = is_profile_running(p)
+                
+            if isinstance(data, dict):
+                data["data"] = profiles
+                return data
+            return profiles
+            
+    except httpx.ConnectError:
+        raise HTTPException(
+            status_code=503,
+            detail="Không thể kết nối GPM Login. Hãy chắc chắn GPM đang chạy (port 19995)."
+        )
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi GPM: {str(e)}")
+
+
+
+async def _start_one(client: httpx.AsyncClient, profile_id: str) -> dict:
+    """Mở 1 profile, trả về kết quả kèm profile_id."""
+    try:
+        res = await client.get(
+            f"{GPM_BASE}/api/v3/profiles/start/{profile_id}",
+            timeout=GPM_TIMEOUT
+        )
+        data = res.json()
+        return {"profile_id": profile_id, "success": data.get("success", False), "data": data}
+    except Exception as e:
+        return {"profile_id": profile_id, "success": False, "error": str(e)}
+
+
+async def _close_one(client: httpx.AsyncClient, profile_id: str) -> dict:
+    """Đóng 1 profile."""
+    try:
+        res = await client.get(
+            f"{GPM_BASE}/api/v3/profiles/close/{profile_id}",
+            timeout=GPM_TIMEOUT
+        )
+        data = res.json()
+        return {"profile_id": profile_id, "success": data.get("success", False), "data": data}
+    except Exception as e:
+        return {"profile_id": profile_id, "success": False, "error": str(e)}
+
+
+@router.post("/api/gpm/start")
+async def gpm_start_profiles(req: GpmProfileRequest):
+    """Mở nhiều GPM profiles song song."""
+    if not req.profile_ids:
+        raise HTTPException(status_code=400, detail="Cần ít nhất 1 profile_id")
+    try:
+        async with httpx.AsyncClient() as client:
+            results = await asyncio.gather(
+                *[_start_one(client, pid) for pid in req.profile_ids]
+            )
+        ok = [r for r in results if r.get("success")]
+        fail = [r for r in results if not r.get("success")]
+        return {"status": "done", "opened": ok, "failed": fail}
+    except httpx.ConnectError:
+        raise HTTPException(status_code=503, detail="Không thể kết nối GPM Login.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi GPM: {str(e)}")
+
+
+@router.post("/api/gpm/close")
+async def gpm_close_profiles(req: GpmProfileRequest):
+    """Đóng nhiều GPM profiles song song."""
+    if not req.profile_ids:
+        raise HTTPException(status_code=400, detail="Cần ít nhất 1 profile_id")
+    try:
+        async with httpx.AsyncClient() as client:
+            results = await asyncio.gather(
+                *[_close_one(client, pid) for pid in req.profile_ids]
+            )
+        ok = [r for r in results if r.get("success")]
+        fail = [r for r in results if not r.get("success")]
+        return {"status": "done", "closed": ok, "failed": fail}
+    except httpx.ConnectError:
+        raise HTTPException(status_code=503, detail="Không thể kết nối GPM Login.")
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi GPM: {str(e)}")
+
+
+# ── GPM: Danh sách nhóm ──
+# GET /api/v3/groups
+@router.get("/api/gpm/groups")
+async def gpm_list_groups():
+    """Lấy danh sách nhóm profiles từ GPM Login."""
+    try:
+        async with httpx.AsyncClient(timeout=GPM_TIMEOUT) as client:
+            res = await client.get(f"{GPM_BASE}/api/v3/groups")
+            res.raise_for_status()
+            return res.json()
+    except httpx.ConnectError:
+        raise HTTPException(status_code=503, detail="Không thể kết nối GPM Login (port 19995).")
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi GPM: {str(e)}")
+
+
+# ── GPM: Lấy thông tin 1 profile ──
+# GET /api/v3/profiles/{id}
+@router.get("/api/gpm/profile/{profile_id}")
+async def gpm_get_profile(profile_id: str):
+    """Lấy thông tin chi tiết 1 profile."""
+    try:
+        async with httpx.AsyncClient(timeout=GPM_TIMEOUT) as client:
+            res = await client.get(f"{GPM_BASE}/api/v3/profiles/{profile_id}")
+            res.raise_for_status()
+            return res.json()
+    except httpx.ConnectError:
+        raise HTTPException(status_code=503, detail="Không thể kết nối GPM Login (port 19995).")
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi GPM: {str(e)}")
+
+
+# ── GPM: Tạo profile mới ──
+# POST /api/v3/profiles/create
+@router.post("/api/gpm/profiles/create")
+async def gpm_create_profile(body: dict):
+    """Tạo profile mới trong GPM Login.
+
+    Body fields (profile_name bắt buộc, còn lại tuỳ chọn):
+      profile_name, group_name, browser_core (chromium/firefox),
+      browser_name (Chrome/Firefox), browser_version,
+      is_random_browser_version, raw_proxy, startup_urls,
+      is_masked_font, is_noise_canvas, is_noise_webgl,
+      is_noise_client_rect, is_noise_audio_context,
+      is_random_screen, is_masked_webgl_data, is_masked_media_device,
+      is_random_os, os, webrtc_mode (1=Off, 2=Base on IP), user_agent
+    """
+    try:
+        async with httpx.AsyncClient(timeout=GPM_TIMEOUT) as client:
+            res = await client.post(f"{GPM_BASE}/api/v3/profiles/create", json=body)
+            res.raise_for_status()
+            return res.json()
+    except httpx.ConnectError:
+        raise HTTPException(status_code=503, detail="Không thể kết nối GPM Login (port 19995).")
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi GPM: {str(e)}")
+
+
+# ── GPM: Cập nhật profile ──
+# POST /api/v3/profiles/update/{profile_id}
+@router.post("/api/gpm/profiles/update/{profile_id}")
+async def gpm_update_profile(profile_id: str, body: dict):
+    """Cập nhật thông tin profile (chỉ gửi field muốn thay đổi).
+
+    Body fields (không bắt buộc):
+      profile_name, group_id, raw_proxy, startup_urls, note, color,
+      user_agent, is_noise_canvas, is_noise_webgl,
+      is_noise_client_rect, is_noise_audio_context
+    """
+    try:
+        async with httpx.AsyncClient(timeout=GPM_TIMEOUT) as client:
+            res = await client.post(
+                f"{GPM_BASE}/api/v3/profiles/update/{profile_id}",
+                json=body
+            )
+            res.raise_for_status()
+            return res.json()
+    except httpx.ConnectError:
+        raise HTTPException(status_code=503, detail="Không thể kết nối GPM Login (port 19995).")
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi GPM: {str(e)}")
+
+
+# ── GPM: Xóa profile ──
+# GET /api/v3/profiles/delete/{profile_id}?mode=1|2
+@router.delete("/api/gpm/profiles/{profile_id}")
+async def gpm_delete_profile(profile_id: str, mode: int = 1):
+    """Xóa profile.
+
+    mode: 1 = chỉ xóa DB, 2 = xóa DB + nơi lưu trữ (file/S3)
+    """
+    try:
+        async with httpx.AsyncClient(timeout=GPM_TIMEOUT) as client:
+            res = await client.get(
+                f"{GPM_BASE}/api/v3/profiles/delete/{profile_id}",
+                params={"mode": mode}
+            )
+            res.raise_for_status()
+            return res.json()
+    except httpx.ConnectError:
+        raise HTTPException(status_code=503, detail="Không thể kết nối GPM Login (port 19995).")
+    except httpx.HTTPStatusError as e:
+        raise HTTPException(status_code=e.response.status_code, detail=str(e))
+    except Exception as e:
+        raise HTTPException(status_code=500, detail=f"Lỗi GPM: {str(e)}")
